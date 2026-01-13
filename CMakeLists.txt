@@ -50,4 +50,6 @@ endif(LUA_FOUND)
 add_subdirectory(argos3)
 
 #Fix new Footbot plugin
+
+
 # add_subdirectory(newfootbot)

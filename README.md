@@ -1,9 +1,5 @@
-# ARGoS3 Turtlebot4 and New Robot Templates
-This repository contains ARGoS3 plugins for the Turtlebot4 together with a couple of lightweight robot examples that can be copied when creating new robots.
-
-<p align="center">
-  <img src="./turtlebot4.gif" width="500" alt="Turtlebot4 simulation snapshot">
-</p>
+# ARGoS3 Osoyoo 
+This repository contains ARGoS3 plugins for the Osoyoo.
 
 ## Prerequisites
 - Install ARGoS3 from the official [repository](https://github.com/ilpincy/argos3) so that headers, libraries, and the `argos3` executable are present on your system.
@@ -38,25 +34,14 @@ export ARGOS_PLUGIN_PATH=$EXAMPLEDIR/build/newepuck
 ```
 
 ## Repository Layout
-- `argos3/plugins/robots/`: houses every robot plugin. See the local README that links to the full “Adding a New Robot” guide.
-- `argos3/plugins/robots/turtlebot4`: full Turtlebot4 plugin 
-- `argos3/plugins/robots/testbot`: minimal plugin focused on the robot entity and Qt-OpenGL mesh 
-- `argos3/plugins/robots/newepuck`: an e-puck robot with additional sensors/ actuators.
+- `argos3/plugins/robots/`: houses every robot plugin. 
+- `argos3/plugins/robots/Osoyoo`: full Osoyoo plugin 
 - `argos3/testing`: controllers, loop functions, and ARGoS experiment files for exercising the plugins.
 - `build.sh`: convenience script for rebuilding and optionally installing.
 
 ## Run the Sample Experiment
-The provided Turtlebot4 obstacle-avoidance experiment can be executed once the plugin is built (and either installed or discoverable via `ARGOS_PLUGIN_PATH`):
+The provided Osoyoo obstacle-avoidance experiment can be executed once the plugin is built (and either installed or discoverable via `ARGOS_PLUGIN_PATH`):
 
 ```bash
-argos3 -c argos3/testing/experiments/turtlebot4_test.argos
+argos3 -c argos3/testing/experiments/Osoyoo_test.argos
 ```
-
-## Building Your Own Robot Plugin
-See `docs/ADDING_NEW_ROBOT.md` for the detailed walkthrough that covers copying a template robot, wiring CMake, adding controllers/experiments, and validating the plugin inside ARGoS3. 
-Follow `docs/NEWEPUCK_TEMPLATE.md`, which also shows how to add install rules so the plugin lands under your ARGoS prefix.
-
-## Possible Future Work
-- Port these controllers to a physical Turtlebot4.
-- Expand the documentation with additional robot templates as they become available.
- 
