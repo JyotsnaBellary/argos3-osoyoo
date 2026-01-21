@@ -33,6 +33,7 @@
 // #include <argos3/plugins/robots/osoyoo/simulator/osoyoo_colored_blob_perspective_camera_default_sensor.h>
 #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_imu_sensor.h>
 #include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
+#include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_encoder_sensor.h>
 
 /*
  * All the ARGoS stuff in the 'argos' namespace.
@@ -107,6 +108,11 @@ public:
    void TestUltrasonicSensor();
    
    /*
+   * This function tests the encoder sensor.
+   */
+   void TestEncoderSensor();
+
+   /*
     * This function resets the controller to its state right after the
     * Init().
     * It is called when you press the reset button in the GUI.
@@ -160,6 +166,9 @@ private:
 
    /* Pointer to the new IMU sensor */
    CCI_OSOYOOIMUSensor* m_pcIMU;
+
+   /* Pointer to the new osoyoo encoder sensor */
+   CCI_OsoyooEncoderSensor* m_pcEncoder;
 
    // CCI_ColoredBlobPerspectiveCameraSensor* m_pcCamera;
    // CCI_LEDsActuator* m_pcLedAct;

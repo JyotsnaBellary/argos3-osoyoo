@@ -80,7 +80,7 @@ namespace argos {
       /** Number of vertices to display the round parts */
       GLuint m_unVertices;
 
-      /** Foot-bot camera module */
+      /** Osoyoo camera module */
       GLuint m_unCameraList;
    };
 

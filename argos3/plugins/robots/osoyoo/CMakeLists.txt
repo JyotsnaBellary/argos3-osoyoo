@@ -8,6 +8,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_OSOYOO_CONTROLINTERFACE
   # control_interface/ci_osoyoo_lidar_sensor.h
   control_interface/ci_osoyoo_proximity_sensor.h
   control_interface/ci_osoyoo_ultrasonic_sensor.h
+  control_interface/ci_osoyoo_encoder_sensor.h
   # control_interface/ci_osoyoo_colored_blob_omnidirectional_camera_sensor.h
   control_interface/ci_osoyoo_imu_sensor.h
 )
@@ -16,6 +17,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_OSOYOO_SIMULATOR
     simulator/dynamics3d_osoyoo_model.h
     # simulator/osoyoo_base_ground_rotzonly_sensor.h
     # simulator/osoyoo_lidar_default_sensor.h
+    simulator/osoyoo_encoder_sensor.h
     simulator/osoyoo_proximity_default_sensor.h
     simulator/osoyoo_ultrasonic_default_sensor.h
     # simulator/osoyoo_colored_blob_omnidirectional_camera_rotzonly_sensor.h
@@ -35,6 +37,7 @@ set(ARGOS3_SOURCES_PLUGINS_ROBOTS_OSOYOO
   # control_interface/ci_osoyoo_lidar_sensor.cpp
   control_interface/ci_osoyoo_proximity_sensor.cpp
   control_interface/ci_osoyoo_ultrasonic_sensor.cpp
+  control_interface/ci_osoyoo_encoder_sensor.cpp
   # control_interface/ci_osoyoo_colored_blob_omnidirectional_camera_sensor.cpp
   control_interface/ci_osoyoo_imu_sensor.cpp
 )
@@ -48,6 +51,7 @@ set(ARGOS3_SOURCES_PLUGINS_ROBOTS_OSOYOO
   # simulator/osoyoo_lidar_default_sensor.cpp
   simulator/osoyoo_proximity_default_sensor.cpp
   simulator/osoyoo_ultrasonic_default_sensor.cpp
+  simulator/osoyoo_encoder_sensor.cpp
   # simulator/osoyoo_colored_blob_omnidirectional_camera_rotzonly_sensor.cpp
   simulator/osoyoo_imu_equipped_entity.cpp
   simulator/osoyoo_imu_sensor.cpp

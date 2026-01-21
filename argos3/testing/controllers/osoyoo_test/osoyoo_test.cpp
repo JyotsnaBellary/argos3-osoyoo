@@ -14,6 +14,7 @@ COsoyooTest::COsoyooTest() :
    // m_pcGround(NULL), 
    // m_pcCamera(NULL),
    // m_pcLight(NULL),
+   m_pcEncoder(NULL),
    m_pcIMU(NULL),
    m_fWheelVelocity(-2.5f) {}
 
@@ -60,7 +61,11 @@ m_pcIMU = GetSensor<CCI_OSOYOOIMUSensor>("osoyoo_imu");
       THROW_ARGOSEXCEPTION("IMU sensor handle is NULL. Check XML <osoyoo_imu implementation=\"default\"/>");
    }
    // const auto& tReadings = m_pcGround->GetReadings();
-   
+   m_pcEncoder = GetSensor<CCI_OsoyooEncoderSensor>("osoyoo_encoder");
+
+if(!m_pcEncoder) {
+   THROW_ARGOSEXCEPTION("Encoder sensor handle is NULL. Check XML <osoyoo_encoder implementation=\"default\"/>");
+}
    /*
     * Parse the configuration file
     *
@@ -144,6 +149,18 @@ m_pcIMU = GetSensor<CCI_OSOYOOIMUSensor>("osoyoo_imu");
 //       LOG << "Color = " << sBlob->Color << std::endl;
 //    }
 // }
+
+// /****************************************/
+// /****************************************/
+
+void COsoyooTest::TestEncoderSensor() {
+   const auto& r = m_pcEncoder->GetReading();
+
+   LOG << CCI_Controller::GetId() << "> Encoder:" << std::endl;
+   LOG << " - Left:  " << r.CoveredDistanceLeftWheel  << std::endl;
+   LOG << " - Right: " << r.CoveredDistanceRightWheel << std::endl;
+   LOG << " - Axis:   " << r.WheelAxisLength           << std::endl;
+}
 
 /****************************************/
 /****************************************/
@@ -269,6 +286,7 @@ void COsoyooTest::ControlStep() {
    // LogLidarSensorReadings();
    TestUltrasonicSensor();
    TestIMUSensor();
+   TestEncoderSensor();
 }
 
 /****************************************/

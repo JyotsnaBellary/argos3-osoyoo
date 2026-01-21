@@ -1,8 +1,8 @@
 
 /**
- * @file <argos3/plugins/robots/foot-bot/control_interface/ci_osoyoo_base_ground_sensor.cpp>
+ * @file <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_base_ground_sensor.cpp>
  *
- * @brief This file provides the implementation of the footbot base ground sensor.
+ * @brief This file provides the implementation of the osoyoo base ground sensor.
  *
  * On the robot, there are two kinds of ground sensors.
  *
