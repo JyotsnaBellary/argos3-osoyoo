@@ -34,7 +34,7 @@ extern const Real OSOYOO_HALF_WHEEL_DISTANCE;
 extern const Real OSOYOO_IR_SENSOR_RING_ELEVATION;
 extern const Real OSOYOO_IR_SENSOR_RING_RADIUS;
 extern const Real OSOYOO_IR_SENSOR_RING_RANGE;
-
+extern const Real OSOYOO_ULTRASONIC_RANGE;
 extern const CRadians OSOYOO_LED_RING_START_ANGLE;
 extern const Real OSOYOO_LED_RING_RADIUS;
 extern const Real OSOYOO_LED_RING_ELEVATION;

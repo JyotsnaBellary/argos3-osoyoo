@@ -10,6 +10,7 @@ using namespace std;
 COsoyooTest::COsoyooTest() :
    m_pcWheels(NULL),
    // m_pcProximity(NULL),
+   m_pcUltrasonic(NULL),
    // m_pcGround(NULL), 
    // m_pcCamera(NULL),
    // m_pcLight(NULL),
@@ -45,7 +46,8 @@ void COsoyooTest::Init(TConfigurationNode& t_node) {
 
    m_pcWheels    = GetActuator<CCI_DifferentialSteeringActuator>("differential_steering");
 
-   // m_pcProximity = GetSensor  <CCI_OsoyooProximitySensor             >("osoyoo_proximity"    );
+   m_pcProximity = GetSensor  <CCI_OsoyooProximitySensor             >("osoyoo_proximity"    );
+   m_pcUltrasonic = GetSensor  <CCI_OsoyooUltrasonicSensor           >("osoyoo_ultrasonic"  );
    // m_pcLight = GetSensor  <CCI_OsoyooLightSensor>("osoyoo_light");
    // m_pcCamera = GetSensor  <CCI_OsoyooColoredBlobOmnidirectionalCameraSensor>("osoyoo_colored_blob_omnidirectional_camera");
    // m_pcGround = GetSensor  <CCI_OsoyooBaseGroundSensor>("osoyoo_ground");
@@ -163,76 +165,94 @@ void COsoyooTest::TestIMUSensor() {
 /****************************************/
 /****************************************/
 
-// void COsoyooTest::AvoidObstaclesWithProximitySensors() {
-//    const auto& readings = m_pcProximity->GetReadings();
-//    std::cout << "Avoiding obstacles with proximity sensors..." << std::endl;
-//    if(readings.empty()) {
-//       THROW_ARGOSEXCEPTION("Proximity sensor returned no readings");
-//    }
+void COsoyooTest::AvoidObstaclesWithProximitySensors() {
+   const auto& readings = m_pcProximity->GetReadings();
+   std::cout << "Avoiding obstacles with proximity sensors..." << std::endl;
+   if(readings.empty()) {
+      THROW_ARGOSEXCEPTION("Proximity sensor returned no readings");
+   }
 
-//    // Safety check
-//    if(readings.size() < 7) {
-//       THROW_ARGOSEXCEPTION("Proximity sensor returned " << readings.size()
-//                            << " readings; expected 7");
-//    }
+   // Safety check
+   if(readings.size() < 7) {
+      THROW_ARGOSEXCEPTION("Proximity sensor returned " << readings.size()
+                           << " readings; expected 7");
+   }
 
-//    /* Get the highest reading in front of the robot, which corresponds to the closest object */
-//    // Start with index 0
-//    const std::string& strId = GetId();
-//    std::cout << strId << " | " << endl;
+   /* Get the highest reading in front of the robot, which corresponds to the closest object */
+   // Start with index 0
+   const std::string& strId = GetId();
+   std::cout << strId << " | " << endl;
 
-//    Real IRvalue_0 = readings[0].Value;
-//    Real IRvalue_1 = readings[1].Value;
-//    Real IRvalue_2 = readings[2].Value;
-//    Real IRvalue_3 = readings[3].Value;
-//    Real IRvalue_4 = readings[4].Value;
-//    Real IRvalue_5 = readings[5].Value;
-//    Real IRvalue_6 = readings[6].Value;
-//    Real fMaxReadVal = 0.0f;
-//    UInt32 unMaxReadIdx = 0;
+   Real IRvalue_0 = readings[0].Value;
+   Real IRvalue_1 = readings[1].Value;
+   Real IRvalue_2 = readings[2].Value;
+   Real IRvalue_3 = readings[3].Value;
+   Real IRvalue_4 = readings[4].Value;
+   Real IRvalue_5 = readings[5].Value;
+   Real IRvalue_6 = readings[6].Value;
+   Real fMaxReadVal = 0.0f;
+   UInt32 unMaxReadIdx = 0;
 
-//    argos::LOG << "IRvalue_0: " << IRvalue_0 << std::endl;
-//    argos::LOG << "IRvalue_1: " << IRvalue_1 << std::endl;
-//    argos::LOG << "IRvalue_2: " << IRvalue_2 << std::endl;
-//    argos::LOG << "IRvalue_3: " << IRvalue_3 << std::endl;
-//    argos::LOG << "IRvalue_4: " << IRvalue_4 << std::endl;
-//    argos::LOG << "IRvalue_5: " << IRvalue_5 << std::endl;
-//    argos::LOG << "IRvalue_6: " << IRvalue_6 << std::endl;
+   argos::LOG << "IRvalue_0: " << IRvalue_0 << std::endl;
+   argos::LOG << "IRvalue_1: " << IRvalue_1 << std::endl;
+   argos::LOG << "IRvalue_2: " << IRvalue_2 << std::endl;
+   argos::LOG << "IRvalue_3: " << IRvalue_3 << std::endl;
+   argos::LOG << "IRvalue_4: " << IRvalue_4 << std::endl;
+   argos::LOG << "IRvalue_5: " << IRvalue_5 << std::endl;
+   argos::LOG << "IRvalue_6: " << IRvalue_6 << std::endl;
 
-//    // Check indices 1, 7, and 6 (front left and right sensors)
-//    // if(fMaxReadVal < IRvalue_2 || fMaxReadVal < IRvalue_3 || fMaxReadVal < IRvalue_4) {
-//    //    m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
+   // Check indices 1, 7, and 6 (front left and right sensors)
+   // if(fMaxReadVal < IRvalue_2 || fMaxReadVal < IRvalue_3 || fMaxReadVal < IRvalue_4) {
+   //    m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
 
-//    // }
-//    // if(fMaxReadVal < IRvalue_5 || fMaxReadVal < IRvalue_6) {
-//    //    fMaxReadVal = IRvalue_5;
-//    //    unMaxReadIdx = 5;
-//    // }
-//    // if(fMaxReadVal < IRvalue_0 || fMaxReadVal < IRvalue_1) {
-//    //    fMaxReadVal = IRvalue_0;
-//    //    unMaxReadIdx = 1;
-//    // }
+   // }
+   // if(fMaxReadVal < IRvalue_5 || fMaxReadVal < IRvalue_6) {
+   //    fMaxReadVal = IRvalue_5;
+   //    unMaxReadIdx = 5;
+   // }
+   // if(fMaxReadVal < IRvalue_0 || fMaxReadVal < IRvalue_1) {
+   //    fMaxReadVal = IRvalue_0;
+   //    unMaxReadIdx = 1;
+   // }
 
-//    /* Do we have an obstacle in front? */
-//    if(IRvalue_2 > 0.0f || IRvalue_3 > 0.0f || IRvalue_4 > 0.0f || IRvalue_5 > 0.0f || IRvalue_6 > 0.0f) {
-//      /* Yes, we do: avoid it */
-//    //   if(unMaxReadIdx == 1 || unMaxReadIdx == 3) {
-//        /* The obstacle is straight, turn left */
-//        m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
-//    //   }
-//    //   else if (unMaxReadIdx == 5) {
-//    //     /* The obstacle is on the right, turn right */
-//    //     m_pcWheels->SetLinearVelocity(0.0f, m_fWheelVelocity);
-//    //   }
-//    }
-//    else {
-//      /* No, we don't: go straight */
-//        argos::LOG << "obj straight unMaxReadIdx set to both wheels: " << m_fWheelVelocity << std::endl;
-//       m_pcWheels->SetLinearVelocity(m_fWheelVelocity, m_fWheelVelocity);
-//       // Real angularVel = m_pcWheels-
-//    }
+   /* Do we have an obstacle in front? */
+   if(IRvalue_2 > 0.0f || IRvalue_3 > 0.0f || IRvalue_4 > 0.0f || IRvalue_5 > 0.0f || IRvalue_6 > 0.0f) {
+     /* Yes, we do: avoid it */
+   //   if(unMaxReadIdx == 1 || unMaxReadIdx == 3) {
+       /* The obstacle is straight, turn left */
+       m_pcWheels->SetLinearVelocity(m_fWheelVelocity, 0.0f);
+   //   }
+   //   else if (unMaxReadIdx == 5) {
+   //     /* The obstacle is on the right, turn right */
+   //     m_pcWheels->SetLinearVelocity(0.0f, m_fWheelVelocity);
+   //   }
+   }
+   else {
+     /* No, we don't: go straight */
+      //  argos::LOG << "obj straight unMaxReadIdx set to both wheels: " << m_fWheelVelocity << std::endl;
+      m_pcWheels->SetLinearVelocity(m_fWheelVelocity, m_fWheelVelocity);
+      // Real angularVel = m_pcWheels-
+   }
 
-// }
+
+}
+
+ /****************************************/
+ /****************************************/
+
+ void COsoyooTest::TestUltrasonicSensor() {
+   LOG << "==================" << std::endl;
+   LOG << CCI_Controller::GetId() << "> Ultrasonic: " << std::endl;
+   const auto& reading = m_pcUltrasonic->GetReading();
+   LOG << "Ultrasonic readings: " << std::endl;
+   // for(const auto& reading : readings) {
+      // LOG <<  " - " << reading << std::endl;
+   // }
+   LOG << " - distance: " << reading.Distance
+    << std::endl;
+
+}
+
 /****************************************/
 /****************************************/
 
@@ -247,7 +267,7 @@ void COsoyooTest::ControlStep() {
    // LogLightUsingCameraSensorReadings();
 
    // LogLidarSensorReadings();
-
+   TestUltrasonicSensor();
    TestIMUSensor();
 }
 

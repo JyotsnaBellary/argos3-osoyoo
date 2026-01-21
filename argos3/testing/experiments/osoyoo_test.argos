@@ -25,7 +25,8 @@
       </actuators>
       <sensors>
         <!-- <osoyoo_ground                       implementation="rot_z_only" /> -->
-        <!-- <osoyoo_proximity implementation="default" show_rays="false" /> -->
+        <osoyoo_ultrasonic implementation="default" show_rays="true" />
+        <osoyoo_proximity implementation="default" show_rays="true" />
         <!-- <osoyoo_lidar implementation="default" num_readings="360" show_rays="false" /> -->
         <!-- <osoyoo_colored_blob_perspective_camera implementation="default" medium="leds" show_rays="true" /> -->
         <!-- <osoyoo_colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" /> -->

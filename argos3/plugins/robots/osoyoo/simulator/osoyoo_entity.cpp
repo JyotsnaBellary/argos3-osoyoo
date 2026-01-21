@@ -28,7 +28,8 @@ namespace argos {
       m_pcEmbodiedEntity(nullptr),
       // m_pcGroundSensorEquippedEntity(nullptr),
       // m_pcLEDEquippedEntity(nullptr),
-      // m_pcProximitySensorEquippedEntity(nullptr),
+      m_pcProximitySensorEquippedEntity(nullptr),
+      m_pcUltrasonicSensorEquippedEntity(nullptr),
       m_pcWheeledEntity(nullptr),
       // m_pcOmnidirectionalCameraEquippedEntity(nullptr),
       m_pcIMUEquippedEntity(nullptr)
@@ -57,7 +58,8 @@ namespace argos {
       m_pcEmbodiedEntity(nullptr),
       // m_pcGroundSensorEquippedEntity(nullptr),
       // m_pcLEDEquippedEntity(nullptr),
-      // m_pcProximitySensorEquippedEntity(nullptr),
+      m_pcProximitySensorEquippedEntity(nullptr),
+      m_pcUltrasonicSensorEquippedEntity(nullptr),
       m_pcWheeledEntity(nullptr),
       // m_pcOmnidirectionalCameraEquippedEntity(nullptr),
       m_pcIMUEquippedEntity(nullptr)
@@ -98,26 +100,78 @@ namespace argos {
    //       AddComponent(*m_pcLIDARSensorEquippedEntity);
 
    //       /* Proximity sensor equipped entity */
-   //       m_pcProximitySensorEquippedEntity =
-   //          new CProximitySensorEquippedEntity(this,
-   //                                             "proximity");
-   //       AddComponent(*m_pcProximitySensorEquippedEntity);
+    m_pcProximitySensorEquippedEntity =
+            new CProximitySensorEquippedEntity(this,
+                                               "proximity");
+         AddComponent(*m_pcProximitySensorEquippedEntity);
+CRadians sensor_angle[7] = {
+    -CRadians::PI / 2.75f,             // -65,3°
+    -CRadians::PI / 4.736f,             // -38°
+    -CRadians::PI / 9.0f,                   // -20° 
+    -CRadians::PI / 60.0f,              // -3°
+    CRadians::PI / 12.630f,              // +60°
+    CRadians::PI / 5.294f,              // +60°
+    CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
+         };
 
-   //       CRadians sensor_angle[7] = {
-   //  -CRadians::PI / 2.75f,             // -65,3°
-   //  -CRadians::PI / 4.736f,             // -38°
-   //  -CRadians::PI / 9.0f,                   // -20° 
-   //  -CRadians::PI / 60.0f,              // -3°
-   //  CRadians::PI / 12.630f,              // +60°
-   //  CRadians::PI / 5.294f,              // +60°
-   //  CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
+         CRadians cAngle;
+         CVector3 cOff, cDir, c_center = CVector3(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
+         for(UInt32 i = 0; i < 7; ++i)
+         {
+            cAngle = sensor_angle[i];
+            cAngle.SignedNormalize();
+            cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+            cOff.RotateZ(cAngle);
+            cOff += c_center;
+            cDir.Set(OSOYOO_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
+            cDir.RotateZ(cAngle);
+            m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, OSOYOO_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
+         }
+
+   //       /* Ultrasonic sensor equipped entity */
+         m_pcUltrasonicSensorEquippedEntity =
+            new CProximitySensorEquippedEntity(this,
+                                               "ultrasonic");
+         AddComponent(*m_pcUltrasonicSensorEquippedEntity);
+CRadians cUltraAngle = -CRadians::PI / 60.0f; // ~ -3 degrees
+cUltraAngle.SignedNormalize();
+
+CVector3 cUltraCenter(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
+
+/* Sensor offset */
+CVector3 cUltraOff(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+cUltraOff.RotateZ(cUltraAngle);
+cUltraOff += cUltraCenter;
+
+/* Sensor direction (ULTRASONIC RANGE) */
+CVector3 cUltraDir(OSOYOO_ULTRASONIC_RANGE, 0.0f, 0.0f);
+cUltraDir.RotateZ(cUltraAngle);
+
+/* Add exactly ONE sensor */
+m_pcUltrasonicSensorEquippedEntity->AddSensor(
+   cUltraOff,
+   cUltraDir,
+   OSOYOO_ULTRASONIC_RANGE,
+   m_pcEmbodiedEntity->GetOriginAnchor()
+);
+
+   //       CRadians sensor_angle[1] = {
+   //  -CRadians::PI / 60.0f              // -3°
+
+   // //  -CRadians::PI / 2.75f,             // -65,3°
+   // //  -CRadians::PI / 4.736f,             // -38°
+   // //  -CRadians::PI / 9.0f,                   // -20° 
+   // //  -CRadians::PI / 60.0f,              // -3°
+   // //  CRadians::PI / 12.630f,              // +60°
+   // //  CRadians::PI / 5.294f,              // +60°
+   // //  CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
    //       };
 
    //       CRadians cAngle;
    //       CVector3 cOff, cDir, c_center = CVector3(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
-   //       for(UInt32 i = 0; i < 7; ++i)
-   //       {
-   //          cAngle = sensor_angle[i];
+   // //       for(UInt32 i = 0; i < 7; ++i)
+   // //       {
+   //          cAngle = sensor_angle[0];
    //          cAngle.SignedNormalize();
    //          cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
    //          cOff.RotateZ(cAngle);
@@ -228,23 +282,83 @@ namespace argos {
          // AddComponent(*m_pcLIDARSensorEquippedEntity);
          
          /* Proximity sensor equipped entity */
-   //       m_pcProximitySensorEquippedEntity =
-   //          new CProximitySensorEquippedEntity(this,
-   //                                             "proximity");
-   //       AddComponent(*m_pcProximitySensorEquippedEntity);
+         m_pcProximitySensorEquippedEntity =
+            new CProximitySensorEquippedEntity(this,
+                                               "proximity");
+         AddComponent(*m_pcProximitySensorEquippedEntity);
+CRadians sensor_angle[7] = {
+    -CRadians::PI / 2.75f,             // -65,3°
+    -CRadians::PI / 4.736f,             // -38°
+    -CRadians::PI / 9.0f,                   // -20° 
+    -CRadians::PI / 60.0f,              // -3°
+    CRadians::PI / 12.630f,              // +60°
+    CRadians::PI / 5.294f,              // +60°
+    CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
+         };
 
+         CRadians cAngle;
+         CVector3 cOff, cDir, c_center = CVector3(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
+         for(UInt32 i = 0; i < 7; ++i)
+         {
+            cAngle = sensor_angle[i];
+            cAngle.SignedNormalize();
+            cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+            cOff.RotateZ(cAngle);
+            cOff += c_center;
+            cDir.Set(OSOYOO_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
+            cDir.RotateZ(cAngle);
+            m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, OSOYOO_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
+         }
+         /* Ultrasonic sensor equipped entity */
+         m_pcUltrasonicSensorEquippedEntity =
+            new CProximitySensorEquippedEntity(this,
+                                               "ultrasonic");
+         AddComponent(*m_pcUltrasonicSensorEquippedEntity);
 
-	//       CRadians sensor_angle[7] = {
-   //  -CRadians::PI / 2.75f,             // -65,3°
-   //  -CRadians::PI / 4.736f,             // -38°
-   //  -CRadians::PI / 9.0f,                   // -20° 
-   //  -CRadians::PI / 60.0f,              // -3°
-   //  CRadians::PI / 12.630f,              // +60°
-   //  CRadians::PI / 5.294f,              // +60°
-   //  CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
+CRadians cUltraAngle = -CRadians::PI / 60.0f; // ~ -3 degrees
+cUltraAngle.SignedNormalize();
+
+CVector3 cUltraCenter(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
+
+/* Sensor offset */
+CVector3 cUltraOff(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+cUltraOff.RotateZ(cUltraAngle);
+cUltraOff += cUltraCenter;
+
+/* Sensor direction (ULTRASONIC RANGE) */
+CVector3 cUltraDir(OSOYOO_ULTRASONIC_RANGE, 0.0f, 0.0f);
+cUltraDir.RotateZ(cUltraAngle);
+
+/* Add exactly ONE sensor */
+m_pcUltrasonicSensorEquippedEntity->AddSensor(
+   cUltraOff,
+   cUltraDir,
+   OSOYOO_ULTRASONIC_RANGE,
+   m_pcEmbodiedEntity->GetOriginAnchor()
+);
+
+	//       CRadians sensor_angle[1] = {
+   //  -CRadians::PI / 60.0f             // -3 degrees
+   // //  -CRadians::PI / 2.75f,             // -65,3°
+   // //  -CRadians::PI / 4.736f,             // -38°
+   // //  -CRadians::PI / 9.0f,                   // -20° 
+   // //  -CRadians::PI / 60.0f,              // -3°
+   // //  CRadians::PI / 12.630f,              // +60°
+   // //  CRadians::PI / 5.294f,              // +60°
+   // //  CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
    //       };
    //       CRadians cAngle;
    //       CVector3 cOff, cDir, c_center = CVector3(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
+
+   //       cAngle = sensor_angle[0];
+   //       cAngle.SignedNormalize();
+   //       cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+   //       cOff.RotateZ(cAngle);
+   //       cOff += c_center;
+   //       cDir.Set(OSOYOO_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
+   //       cDir.RotateZ(cAngle);
+   //       m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, OSOYOO_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
+
    //       for(UInt32 i = 0; i < 7; ++i)
    //       {
    //          cAngle = sensor_angle[i];

@@ -25,7 +25,8 @@
 /* Definition of proximity sensor */
 // #include <argos3/plugins/robots/generic/control_interface/ci_proximity_sensor.h>
 // #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_light_sensor.h>
-// #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_proximity_sensor.h>
+#include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_proximity_sensor.h>
+#include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_ultrasonic_sensor.h>
 // #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_base_ground_sensor.h>
 // #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_lidar_sensor.h>
 // #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_colored_blob_omnidirectional_camera_sensor.h>
@@ -101,6 +102,11 @@ public:
    void TestIMUSensor();
 
    /*
+   * This function tests the ultrasonic sensor.
+   */
+   void TestUltrasonicSensor();
+   
+   /*
     * This function resets the controller to its state right after the
     * Init().
     * It is called when you press the reset button in the GUI.
@@ -124,7 +130,10 @@ private:
    CCI_DifferentialSteeringActuator* m_pcWheels;
 
    /* Pointer to the osoyoo proximity sensor */
-   // CCI_OsoyooProximitySensor* m_pcProximity;
+   CCI_OsoyooProximitySensor* m_pcProximity;
+
+   /* Pointer to the osoyoo ultrasonic sensor */
+   CCI_OsoyooUltrasonicSensor* m_pcUltrasonic;
 
    /* Pointer to the osoyoo base ground sensor */
    // CCI_OsoyooBaseGroundSensor* m_pcGround;
@@ -154,6 +163,7 @@ private:
 
    // CCI_ColoredBlobPerspectiveCameraSensor* m_pcCamera;
    // CCI_LEDsActuator* m_pcLedAct;
+
 
 };
 

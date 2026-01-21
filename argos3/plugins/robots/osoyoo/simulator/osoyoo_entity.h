@@ -17,7 +17,7 @@ namespace argos {
    // class CLightSensorEquippedEntity;
    // class CPerspectiveCameraEquippedEntity;
    // class COmnidirectionalCameraEquippedEntity;
-   // class CProximitySensorEquippedEntity;
+   class CProximitySensorEquippedEntity;
    // class CQuadRotorEntity;
    // class CRABEquippedEntity;
    // class CBatteryEquippedEntity;
@@ -88,9 +88,13 @@ namespace argos {
       //    return *m_pcLIDARSensorEquippedEntity;
       // }
 
-      // inline CProximitySensorEquippedEntity& GetProximitySensorEquippedEntity() {
-      //    return *m_pcProximitySensorEquippedEntity;
-      // }
+      inline CProximitySensorEquippedEntity& GetUltrasonicSensorEquippedEntity() {
+         return *m_pcUltrasonicSensorEquippedEntity;
+      }
+
+      inline CProximitySensorEquippedEntity& GetProximitySensorEquippedEntity() {
+         return *m_pcProximitySensorEquippedEntity;
+      }
 
       inline COSOYOOIMUEquippedEntity& GetIMUEquippedEntity() {
          return *m_pcIMUEquippedEntity;
@@ -127,7 +131,8 @@ namespace argos {
       // CGroundSensorEquippedEntity*           m_pcGroundSensorEquippedEntity;
       // CLEDEquippedEntity*                    m_pcLEDEquippedEntity;
       // CLightSensorEquippedEntity*            m_pcLightSensorEquippedEntity;
-      // CProximitySensorEquippedEntity*        m_pcProximitySensorEquippedEntity;
+      CProximitySensorEquippedEntity*        m_pcProximitySensorEquippedEntity;
+      CProximitySensorEquippedEntity*        m_pcUltrasonicSensorEquippedEntity;
       // CProximitySensorEquippedEntity*        m_pcLIDARSensorEquippedEntity;
       // CRABEquippedEntity*                    m_pcRABEquippedEntity;
       CWheeledEntity*                        m_pcWheeledEntity;
