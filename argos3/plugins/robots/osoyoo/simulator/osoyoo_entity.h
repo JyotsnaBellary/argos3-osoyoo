@@ -12,15 +12,7 @@ namespace argos {
    class CEmbodiedEntity;
    class COsoyooEntity;
    class COSOYOOIMUEquippedEntity;
-   // class CGroundSensorEquippedEntity;
-   // class CLEDEquippedEntity;
-   // class CLightSensorEquippedEntity;
-   // class CPerspectiveCameraEquippedEntity;
-   // class COmnidirectionalCameraEquippedEntity;
-   class CProximitySensorEquippedEntity;
-   // class CQuadRotorEntity;
-   // class CRABEquippedEntity;
-   // class CBatteryEquippedEntity;
+   class CProximitySensorEquippedEntity; 
 }
 
 #include <argos3/core/simulator/entity/composable_entity.h>
@@ -68,26 +60,6 @@ namespace argos {
          return *m_pcEmbodiedEntity;
       }
 
-      // inline CGroundSensorEquippedEntity& GetGroundSensorEquippedEntity() {
-      //    return *m_pcGroundSensorEquippedEntity;
-      // }
-
-      // inline CLEDEquippedEntity& GetLEDEquippedEntity() {
-      //    return *m_pcLEDEquippedEntity;
-      // }
-
-      // inline CLightSensorEquippedEntity& GetLightSensorEquippedEntity() {
-      //    return *m_pcLightSensorEquippedEntity;
-      // }
-
-      // inline COmnidirectionalCameraEquippedEntity& GetOmnidirectionalCameraEquippedEntity() {
-      //    return *m_pcOmnidirectionalCameraEquippedEntity;
-      // }
-
-      // inline CProximitySensorEquippedEntity& GetLidarSensorEquippedEntity() {
-      //    return *m_pcLIDARSensorEquippedEntity;
-      // }
-
       inline CProximitySensorEquippedEntity& GetUltrasonicSensorEquippedEntity() {
          return *m_pcUltrasonicSensorEquippedEntity;
       }
@@ -100,25 +72,13 @@ namespace argos {
          return *m_pcIMUEquippedEntity;
       }
 
-      // inline CRABEquippedEntity& GetRABEquippedEntity() {
-      //    return *m_pcRABEquippedEntity;
-      // }
-
       inline CWheeledEntity& GetWheeledEntity() {
          return *m_pcWheeledEntity;
       }
 
-      // inline CBatteryEquippedEntity& GetBatterySensorEquippedEntity() {
-      //     return *m_pcBatteryEquippedEntity;
-      // }
-
       virtual std::string GetTypeDescription() const {
          return "osoyoo";
       }
-
-      // inline CQuadRotorEntity& GetQuadRotorEntity() {
-      //    return *m_pcQuadRotorEntity;
-      // }
 
    private:
 
@@ -128,18 +88,9 @@ namespace argos {
 
       CControllableEntity*                   m_pcControllableEntity;
       CEmbodiedEntity*                       m_pcEmbodiedEntity;
-      // CGroundSensorEquippedEntity*           m_pcGroundSensorEquippedEntity;
-      // CLEDEquippedEntity*                    m_pcLEDEquippedEntity;
-      // CLightSensorEquippedEntity*            m_pcLightSensorEquippedEntity;
       CProximitySensorEquippedEntity*        m_pcProximitySensorEquippedEntity;
       CProximitySensorEquippedEntity*        m_pcUltrasonicSensorEquippedEntity;
-      // CProximitySensorEquippedEntity*        m_pcLIDARSensorEquippedEntity;
-      // CRABEquippedEntity*                    m_pcRABEquippedEntity;
       CWheeledEntity*                        m_pcWheeledEntity;
-      // CBatteryEquippedEntity*                m_pcBatteryEquippedEntity;
-      // CQuadRotorEntity*                      m_pcQuadRotorEntity;
-      // CPerspectiveCameraEquippedEntity*      m_pcPerspectiveCameraEquippedEntity;
-      // COmnidirectionalCameraEquippedEntity*  m_pcOmnidirectionalCameraEquippedEntity;
       COSOYOOIMUEquippedEntity*              m_pcIMUEquippedEntity;
    };
 

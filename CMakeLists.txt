@@ -48,8 +48,3 @@ endif(LUA_FOUND)
 
 # to use the new robot
 add_subdirectory(argos3)
-
-#Fix new Footbot plugin
-
-
-# add_subdirectory(newfootbot)

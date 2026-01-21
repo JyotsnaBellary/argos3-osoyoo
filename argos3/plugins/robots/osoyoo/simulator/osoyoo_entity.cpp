@@ -26,14 +26,10 @@ namespace argos {
       CComposableEntity(nullptr),
       m_pcControllableEntity(nullptr),
       m_pcEmbodiedEntity(nullptr),
-      // m_pcGroundSensorEquippedEntity(nullptr),
-      // m_pcLEDEquippedEntity(nullptr),
       m_pcProximitySensorEquippedEntity(nullptr),
       m_pcUltrasonicSensorEquippedEntity(nullptr),
       m_pcWheeledEntity(nullptr),
-      // m_pcOmnidirectionalCameraEquippedEntity(nullptr),
       m_pcIMUEquippedEntity(nullptr)
-      // m_pcPerspectiveCameraEquippedEntity(NULL)
       {
    }
 
@@ -56,14 +52,10 @@ namespace argos {
       CComposableEntity(nullptr, str_id),
       m_pcControllableEntity(nullptr),
       m_pcEmbodiedEntity(nullptr),
-      // m_pcGroundSensorEquippedEntity(nullptr),
-      // m_pcLEDEquippedEntity(nullptr),
       m_pcProximitySensorEquippedEntity(nullptr),
       m_pcUltrasonicSensorEquippedEntity(nullptr),
       m_pcWheeledEntity(nullptr),
-      // m_pcOmnidirectionalCameraEquippedEntity(nullptr),
       m_pcIMUEquippedEntity(nullptr)
-      // m_pcPerspectiveCameraEquippedEntity(nullptr)
        {
       try {
          /*
@@ -83,23 +75,7 @@ namespace argos {
             new COSOYOOIMUEquippedEntity(this, "imu_0");
          AddComponent(*m_pcIMUEquippedEntity);
 
-         // /* LED equipped entity */
-   //       m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
-   //       AddComponent(*m_pcLEDEquippedEntity);
-   //       m_pcLEDEquippedEntity->AddLEDRing(
-   //          CVector3(0.0f, 0.0f, OSOYOO_LED_RING_ELEVATION),
-   //          OSOYOO_LED_RING_RADIUS,
-   //          OSOYOO_LED_RING_START_ANGLE,
-   //          8,
-   //          m_pcEmbodiedEntity->GetOriginAnchor());
-
-   //       /* LIDAR sensor equipped entity */
-   //       m_pcLIDARSensorEquippedEntity =
-   //          new CProximitySensorEquippedEntity(this,
-   //                                             "lidar");
-   //       AddComponent(*m_pcLIDARSensorEquippedEntity);
-
-   //       /* Proximity sensor equipped entity */
+   /* Proximity sensor equipped entity */
     m_pcProximitySensorEquippedEntity =
             new CProximitySensorEquippedEntity(this,
                                                "proximity");
@@ -128,7 +104,7 @@ CRadians sensor_angle[7] = {
             m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, OSOYOO_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
          }
 
-   //       /* Ultrasonic sensor equipped entity */
+          /* Ultrasonic sensor equipped entity */
          m_pcUltrasonicSensorEquippedEntity =
             new CProximitySensorEquippedEntity(this,
                                                "ultrasonic");
@@ -154,74 +130,6 @@ m_pcUltrasonicSensorEquippedEntity->AddSensor(
    OSOYOO_ULTRASONIC_RANGE,
    m_pcEmbodiedEntity->GetOriginAnchor()
 );
-
-   //       CRadians sensor_angle[1] = {
-   //  -CRadians::PI / 60.0f              // -3°
-
-   // //  -CRadians::PI / 2.75f,             // -65,3°
-   // //  -CRadians::PI / 4.736f,             // -38°
-   // //  -CRadians::PI / 9.0f,                   // -20° 
-   // //  -CRadians::PI / 60.0f,              // -3°
-   // //  CRadians::PI / 12.630f,              // +60°
-   // //  CRadians::PI / 5.294f,              // +60°
-   // //  CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
-   //       };
-
-   //       CRadians cAngle;
-   //       CVector3 cOff, cDir, c_center = CVector3(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
-   // //       for(UInt32 i = 0; i < 7; ++i)
-   // //       {
-   //          cAngle = sensor_angle[0];
-   //          cAngle.SignedNormalize();
-   //          cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
-   //          cOff.RotateZ(cAngle);
-   //          cOff += c_center;
-   //          cDir.Set(OSOYOO_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
-   //          cDir.RotateZ(cAngle);
-   //          m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, OSOYOO_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
-   //       }
-
-   //       /* Omnidirectional camera equipped entity */
-   //       m_pcOmnidirectionalCameraEquippedEntity =
-   //          new COmnidirectionalCameraEquippedEntity(this,
-   //                                                   "omnidirectional_camera_0",
-   //                                                   c_omnicam_aperture,
-   //                                                   CVector3(0.0f,
-   //                                                            0.0f,
-   //                                                            OMNIDIRECTIONAL_CAMERA_ELEVATION));
-   //       AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
-         
-         /* Perspective camera equipped entity */
-         // CQuaternion cPerspCamOrient(CRadians::PI_OVER_TWO, CVector3::Y);
-         // SAnchor& cPerspCamAnchor = m_pcEmbodiedEntity->AddAnchor("perspective_camera",
-         //                                                          CVector3(0.0, 0.0, 0.0),
-                                                                  // cPerspCamOrient);
-         // m_pcPerspectiveCameraEquippedEntity =
-         //    new CPerspectiveCameraEquippedEntity(this,
-         //                                         "perspective_camera_0",
-         //                                         c_perspcam_aperture,
-         //                                         f_perspcam_focal_length,
-         //                                         f_perspcam_range,
-         //                                         640, 480,
-         //                                         cPerspCamAnchor);
-         // AddComponent(*m_pcPerspectiveCameraEquippedEntity);
-
-         /* Ground sensor equipped entity */
-         // m_pcGroundSensorEquippedEntity =
-         //    new CGroundSensorEquippedEntity(this, "ground_0");
-         // AddComponent(*m_pcGroundSensorEquippedEntity);
-         // m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, 0.0268),
-         //    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-         //    m_pcEmbodiedEntity->GetOriginAnchor());
-         // m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, -0.0268),
-         //    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-         //    m_pcEmbodiedEntity->GetOriginAnchor());
-         // m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, 0.109),
-         //    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-         //    m_pcEmbodiedEntity->GetOriginAnchor());
-         // m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, -0.109),
-         //    CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-         //    m_pcEmbodiedEntity->GetOriginAnchor());
 
          /* Controllable entity
             It must be the last one, for actuators/sensors to link to composing entities correctly */
@@ -265,22 +173,6 @@ m_pcUltrasonicSensorEquippedEntity->AddSensor(
             new COSOYOOIMUEquippedEntity(this, "imu_0");
          AddComponent(*m_pcIMUEquippedEntity);
 
-         /* LED equipped entity, with LEDs [0-11] and beacon [12] */
-         // m_pcLEDEquippedEntity = new CLEDEquippedEntity(this, "leds_0");
-         // AddComponent(*m_pcLEDEquippedEntity);
-         // m_pcLEDEquippedEntity->AddLEDRing(
-         //    CVector3(0.0f, 0.0f, OSOYOO_LED_RING_ELEVATION),
-         //    OSOYOO_LED_RING_RADIUS,
-         //    OSOYOO_LED_RING_START_ANGLE,
-         //    8,
-         //    m_pcEmbodiedEntity->GetOriginAnchor());
-         
-         // /* LIDAR sensor equipped entity */
-         // m_pcLIDARSensorEquippedEntity =
-         //    new CProximitySensorEquippedEntity(this,
-         //                                       "lidar");
-         // AddComponent(*m_pcLIDARSensorEquippedEntity);
-         
          /* Proximity sensor equipped entity */
          m_pcProximitySensorEquippedEntity =
             new CProximitySensorEquippedEntity(this,
@@ -336,73 +228,10 @@ m_pcUltrasonicSensorEquippedEntity->AddSensor(
    OSOYOO_ULTRASONIC_RANGE,
    m_pcEmbodiedEntity->GetOriginAnchor()
 );
-
-	//       CRadians sensor_angle[1] = {
-   //  -CRadians::PI / 60.0f             // -3 degrees
-   // //  -CRadians::PI / 2.75f,             // -65,3°
-   // //  -CRadians::PI / 4.736f,             // -38°
-   // //  -CRadians::PI / 9.0f,                   // -20° 
-   // //  -CRadians::PI / 60.0f,              // -3°
-   // //  CRadians::PI / 12.630f,              // +60°
-   // //  CRadians::PI / 5.294f,              // +60°
-   // //  CRadians::PI / 2.7565f             // +90° (rightmost)            // slight extra left bias if needed
-   //       };
-   //       CRadians cAngle;
-   //       CVector3 cOff, cDir, c_center = CVector3(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
-
-   //       cAngle = sensor_angle[0];
-   //       cAngle.SignedNormalize();
-   //       cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
-   //       cOff.RotateZ(cAngle);
-   //       cOff += c_center;
-   //       cDir.Set(OSOYOO_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
-   //       cDir.RotateZ(cAngle);
-   //       m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, OSOYOO_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
-
-   //       for(UInt32 i = 0; i < 7; ++i)
-   //       {
-   //          cAngle = sensor_angle[i];
-   //          cAngle.SignedNormalize();
-   //          cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
-   //          cOff.RotateZ(cAngle);
-   //          cOff += c_center;
-   //          cDir.Set(OSOYOO_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
-   //          cDir.RotateZ(cAngle);
-   //          m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, OSOYOO_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
-   //       }
-
-         /* Omnidirectional camera equipped entity */
-   //       CDegrees cAperture(70.0f);
-   //       GetNodeAttributeOrDefault(t_tree, "omnidirectional_camera_aperture", cAperture, cAperture);
-   //       m_pcOmnidirectionalCameraEquippedEntity =
-   //          new COmnidirectionalCameraEquippedEntity(this,
-   //                                                   "omnidirectional_camera_0",
-   //                                                   ToRadians(cAperture),
-   //                                                   CVector3(0.0f,
-   //                                                            0.0f,
-   //                                                            OMNIDIRECTIONAL_CAMERA_ELEVATION));
-   //       AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
-
-   //       /* Ground sensor equipped entity */
-   //       m_pcGroundSensorEquippedEntity =
-   //          new CGroundSensorEquippedEntity(this, "ground_0");
-   //       AddComponent(*m_pcGroundSensorEquippedEntity);
-   //       m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, 0.0268),
-   //          CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-   //          m_pcEmbodiedEntity->GetOriginAnchor());
-   //       m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.1425, -0.0268),
-   //          CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-   //          m_pcEmbodiedEntity->GetOriginAnchor());
-   //       m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, 0.109),
-   //          CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-   //          m_pcEmbodiedEntity->GetOriginAnchor());
-   //       m_pcGroundSensorEquippedEntity->AddSensor(CVector2(0.0879, -0.109),
-   //          CGroundSensorEquippedEntity::TYPE_GRAYSCALE,
-   //          m_pcEmbodiedEntity->GetOriginAnchor());
          
    
-   //       /* Controllable entity
-   //          It must be the last one, for actuators/sensors to link to composing entities correctly */
+         /* Controllable entity
+           It must be the last one, for actuators/sensors to link to composing entities correctly */
          m_pcControllableEntity = new CControllableEntity(this);
          AddComponent(*m_pcControllableEntity);
          m_pcControllableEntity->Init(GetNode(t_tree, "controller"));
@@ -437,10 +266,7 @@ m_pcUltrasonicSensorEquippedEntity->AddSensor(
 #define UPDATE(COMPONENT) if(COMPONENT->IsEnabled()) COMPONENT->Update();
 
    void COsoyooEntity::UpdateComponents() {
-      // UPDATE(m_pcLEDEquippedEntity);
-      // UPDATE(m_pcGroundSensorEquippedEntity);
-      // UPDATE(m_pcPerspectiveCameraEquippedEntity)
-
+      
       if(m_pcIMUEquippedEntity && m_pcIMUEquippedEntity->IsEnabled()) {
 
       const CQuaternion& cQuat =
