@@ -201,6 +201,7 @@ CRadians sensor_angle[7] = {
             cDir.RotateZ(cAngle);
             m_pcProximitySensorEquippedEntity->AddSensor(cOff, cDir, OSOYOO_IR_SENSOR_RING_RANGE, m_pcEmbodiedEntity->GetOriginAnchor());
          }
+
          /* Ultrasonic sensor equipped entity */
          m_pcUltrasonicSensorEquippedEntity =
             new CProximitySensorEquippedEntity(this,
@@ -221,7 +222,7 @@ cUltraOff += cUltraCenter;
 CVector3 cUltraDir(OSOYOO_ULTRASONIC_RANGE, 0.0f, 0.0f);
 cUltraDir.RotateZ(cUltraAngle);
 
-/* Add exactly ONE sensor */
+/* Add ONE sensor/ refer proximity sensor to add more than one sensor */
 m_pcUltrasonicSensorEquippedEntity->AddSensor(
    cUltraOff,
    cUltraDir,

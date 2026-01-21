@@ -22,8 +22,8 @@ private:
    CVector3 m_fPrevLeft;
    CVector3 m_fPrevRight;
 
-   Real m_fLeftDist;
-   Real m_fRightDist;
+   Real m_fLeftDistance;
+   Real m_fRightDistance;
 
 };
 

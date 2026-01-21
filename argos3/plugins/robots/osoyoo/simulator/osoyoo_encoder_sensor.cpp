@@ -14,39 +14,44 @@ void COsoyooEncoderSensor::SetRobot(CComposableEntity& c_entity) {
 }
 
 void COsoyooEncoderSensor::Init(TConfigurationNode&) {
-    m_fLeftDist  = 0.0;
-    m_fRightDist = 0.0;
+    m_fLeftDistance  = 0.0;
+    m_fRightDistance = 0.0;
 
    m_sReading.WheelAxisLength = OSOYOO_WHEEL_DISTANCE;
 }
 
 void COsoyooEncoderSensor::Update() {
-   /* Time step */
-   const Real fDt = CPhysicsEngine::GetSimulationClockTick();
+   /* Duration of one simulation step (seconds) */
+   const Real fTimeStep = CPhysicsEngine::GetSimulationClockTick();
 
-   /* Angular velocities (rad/s) */
-   Real wL = m_pcWheels->GetWheelVelocity(0);
-   Real wR = m_pcWheels->GetWheelVelocity(1);
+   /* Wheel angular velocities (rad/s) */
+   const Real fLeftWheelAngularVelocity  = m_pcWheels->GetWheelVelocity(0);
+   const Real fRightWheelAngularVelocity = m_pcWheels->GetWheelVelocity(1);
 
-   /* Linear velocities (m/s) */
-   Real vL = wL * OSOYOO_WHEEL_RADIUS;
-   Real vR = wR * OSOYOO_WHEEL_RADIUS;
+   /* Wheel linear velocities (m/s) */
+   const Real fLeftWheelLinearVelocity  =
+      fLeftWheelAngularVelocity  * OSOYOO_WHEEL_RADIUS;
+   const Real fRightWheelLinearVelocity =
+      fRightWheelAngularVelocity * OSOYOO_WHEEL_RADIUS;
 
-   /* Integrate distance */
-   Real dL = vL * fDt;
-   Real dR = vR * fDt;
+   /* Distance traveled during this timestep (m) */
+   const Real fLeftWheelDeltaDistance  =
+      fLeftWheelLinearVelocity  * fTimeStep;
+   const Real fRightWheelDeltaDistance =
+      fRightWheelLinearVelocity  * fTimeStep;
 
-   m_fLeftDist  += dL;
-   m_fRightDist += dR;
+   /* Accumulate total distance (optional state) */
+   m_fLeftDistance  += fLeftWheelDeltaDistance;
+   m_fRightDistance += fRightWheelDeltaDistance;
 
-   /* Encoder reports delta since last step */
-   m_sReading.CoveredDistanceLeftWheel  = dL;
-   m_sReading.CoveredDistanceRightWheel = dR;
+   /* Encoder output: delta since last update */
+   m_sReading.CoveredDistanceLeftWheel  = fLeftWheelDeltaDistance;
+   m_sReading.CoveredDistanceRightWheel = fRightWheelDeltaDistance;
 }
 
 void COsoyooEncoderSensor::Reset() {
-   m_fLeftDist  = 0.0f;
-   m_fRightDist = 0.0f;
+   m_fLeftDistance  = 0.0f;
+   m_fRightDistance = 0.0f;
 
    m_sReading.CoveredDistanceLeftWheel  = 0.0f;
    m_sReading.CoveredDistanceRightWheel = 0.0f;
