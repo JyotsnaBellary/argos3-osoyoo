@@ -17,7 +17,7 @@ void COsoyooEncoderSensor::Init(TConfigurationNode&) {
     m_fLeftDistance  = 0.0;
     m_fRightDistance = 0.0;
 
-   m_sReading.WheelAxisLength = OSOYOO_WHEEL_DISTANCE;
+   m_sReading.WheelAxisLength = OSOYOO_INTERWHEEL_DISTANCE;
 }
 
 void COsoyooEncoderSensor::Update() {

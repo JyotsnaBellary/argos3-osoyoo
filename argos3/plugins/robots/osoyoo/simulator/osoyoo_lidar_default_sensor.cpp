@@ -84,10 +84,10 @@ namespace argos {
          GetNodeAttributeOrDefault(t_tree, "num_readings", m_unNumReadings, m_unNumReadings);
          m_pcProximityEntity->AddSensorFan(
             CVector3(0.0, 0.0, OSOYOO_LIDAR_ELEVATION),
-            OSOYOO_LIDAR_SENSORS_FAN_RADIUS + OSOYOO_LIDAR_SENSORS_RING_RANGE.GetMin(),
+            OSOYOO_FOOTPRINT_RADIUS + OSOYOO_LIDAR_SENSORS_RING_RANGE.GetMin(),
             -OSOYOO_LIDAR_ANGLE_SPAN * 0.5,
             OSOYOO_LIDAR_ANGLE_SPAN * 0.5,
-            OSOYOO_LIDAR_SENSORS_FAN_RADIUS + OSOYOO_LIDAR_SENSORS_RING_RANGE.GetMax(),
+            OSOYOO_FOOTPRINT_RADIUS + OSOYOO_LIDAR_SENSORS_RING_RANGE.GetMax(),
             m_unNumReadings,
             m_pcEmbodiedEntity->GetOriginAnchor());
          m_pnReadings = new long[m_unNumReadings];

@@ -27,34 +27,66 @@ namespace argos {
       m_cDiffSteering(c_engine,
                       OSOYOO_MAX_FORCE,
                       OSOYOO_MAX_TORQUE,
-                      OSOYOO_WHEEL_DISTANCE,
+                      OSOYOO_INTERWHEEL_DISTANCE,
                       c_entity.GetConfigurationNode()),
       m_fCurrentWheelVelocity(m_cWheeledEntity.GetWheelVelocities()) {
       /* Create the body with initial position and orientation */
       cpBody* ptBody =
          cpSpaceAddBody(GetDynamics2DEngine().GetPhysicsSpace(),
                         cpBodyNew(OSOYOO_MASS,
-                                  cpMomentForCircle(OSOYOO_MASS,
-                                                    0.0f,
-                                                    OSOYOO_BASE_RADIUS + OSOYOO_BASE_RADIUS,
-                                                    cpvzero)));
+                                  cpMomentForBox(OSOYOO_MASS,
+                                                    OSOYOO_LENGTH,
+                                                    OSOYOO_WIDTH)));
       const CVector3& cPosition = GetEmbodiedEntity().GetOriginAnchor().Position;
       ptBody->p = cpv(cPosition.GetX(), cPosition.GetY());
       CRadians cXAngle, cYAngle, cZAngle;
       GetEmbodiedEntity().GetOriginAnchor().Orientation.ToEulerAngles(cZAngle, cYAngle, cXAngle);
       cpBodySetAngle(ptBody, cZAngle.GetValue());
+
+      /* --- Chassis box --- */
+cpVect tChassisVerts[4] = {
+   cpv(+OSOYOO_LENGTH * 0.5f, +OSOYOO_WIDTH * 0.5f),
+   cpv(+OSOYOO_LENGTH * 0.5f, -OSOYOO_WIDTH * 0.5f),
+   cpv(-OSOYOO_LENGTH * 0.5f, -OSOYOO_WIDTH * 0.5f),
+   cpv(-OSOYOO_LENGTH * 0.5f, +OSOYOO_WIDTH * 0.5f)
+};
+
       /* Create the body shape */
-      cpShape* ptShape =
-         cpSpaceAddShape(GetDynamics2DEngine().GetPhysicsSpace(),
-                         cpCircleShapeNew(ptBody,
-                                          OSOYOO_BASE_RADIUS,
-                                          cpvzero));
-      ptShape->e = 0.0; // No elasticity
-      ptShape->u = 0.7; // Lots of friction
-      /* Constrain the actual base body to follow the diff steering control */
+cpShape* ptChassis =
+   cpSpaceAddShape(GetDynamics2DEngine().GetPhysicsSpace(),
+                   cpPolyShapeNew(ptBody,
+                                  4,
+                                  tChassisVerts,
+                                  cpvzero));
+ptChassis->e = 0.0;   // no bounce
+ptChassis->u = 0.7;   // body friction
+      
+      /* --- Left wheel --- */
+// cpShape* ptWheelL =
+//    cpSpaceAddShape(GetDynamics2DEngine().GetPhysicsSpace(),
+//                    cpCircleShapeNew(ptBody,
+//                                     OSOYOO_WHEEL_RADIUS,
+//                                     cpv(OSOYOO_WHEEL_OFFSET_X,
+//                                         +OSOYOO_WHEEL_OFFSET_Y)));
+// ptWheelL->e = 0.0;
+// ptWheelL->u = 0.9;
+
+// /* --- Right wheel --- */
+// cpShape* ptWheelR =
+//    cpSpaceAddShape(GetDynamics2DEngine().GetPhysicsSpace(),
+//                    cpCircleShapeNew(ptBody,
+//                                     OSOYOO_WHEEL_RADIUS,
+//                                     cpv(OSOYOO_WHEEL_OFFSET_X,
+//                                         -OSOYOO_WHEEL_OFFSET_Y)));
+// ptWheelR->e = 0.0;
+// ptWheelR->u = 0.9;
+/* Constrain the actual base body to follow the diff steering control */
       m_cDiffSteering.AttachTo(ptBody);
+
       /* Set the body so that the default methods work as expected */
-      SetBody(ptBody, OSOYOO_BASE_TOP);
+      SetBody(ptBody, OSOYOO_WHEEL_RADIUS + OSOYOO_HEIGHT);
+
+
    }
 
    /****************************************/
@@ -77,15 +109,13 @@ namespace argos {
 
    void CDynamics2DOsoyooModel::UpdateFromEntityStatus() {
       /* Do we want to move? */
-      if((m_fCurrentWheelVelocity[OSOYOO_LEFT_WHEEL] != 0.0f) ||
-         (m_fCurrentWheelVelocity[OSOYOO_RIGHT_WHEEL] != 0.0f)) {
-         m_cDiffSteering.SetWheelVelocity(m_fCurrentWheelVelocity[OSOYOO_LEFT_WHEEL],
-                                          m_fCurrentWheelVelocity[OSOYOO_RIGHT_WHEEL]);
-      }
-      else {
-         /* No, we don't want to move - zero all speeds */
-         m_cDiffSteering.Reset();
-      }
+      const auto& v = m_cWheeledEntity.GetWheelVelocities();
+if(v[OSOYOO_LEFT_WHEEL] != 0.0f || v[OSOYOO_RIGHT_WHEEL] != 0.0f) {
+   m_cDiffSteering.SetWheelVelocity(v[0], v[1]);
+}
+else {
+   m_cDiffSteering.Reset();
+}
    }
 
    /****************************************/

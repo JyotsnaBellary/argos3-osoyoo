@@ -19,46 +19,14 @@ namespace argos
    /****************************************/
    /****************************************/
 
-   /* All measures are in meters */
-
-   static const Real WHEEL_DIAMETER = OSOYOO_WHEEL_RADIUS * 2.0f;
-   static const Real WHEEL_RADIUS = OSOYOO_WHEEL_RADIUS;
-   static const Real WHEEL_WIDTH = 0.02f; // Need this value
-   static const Real HALF_WHEEL_WIDTH = WHEEL_WIDTH * 0.5f;
-   static const Real INTERWHEEL_DISTANCE = 0.053f;
-   static const Real HALF_INTERWHEEL_DISTANCE = OSOYOO_HALF_WHEEL_DISTANCE;
-
-   static const Real HALF_CHASSIS_WIDTH = OSOYOO_HALF_WHEEL_DISTANCE - HALF_WHEEL_WIDTH;
-
-   static const Real BODY_RADIUS = OSOYOO_BASE_RADIUS;
-   static const Real BODY_ELEVATION = OSOYOO_BASE_ELEVATION; // to be checked!
-   static const Real BODY_HEIGHT = OSOYOO_BASE_HEIGHT;       // to be checked!
-   static const Real LOWER_BODY_HEIGHT = OSOYOO_LOWER_BODY_HEIGHT;
-
-   static const Real LED_ELEVATION = BODY_ELEVATION + BODY_HEIGHT;
-   static const Real LED_HEIGHT = 0.01; // to be checked!
-   // static const Real LED_UPPER_RING_INNER_RADIUS = 0.8 * BODY_RADIUS;
-
-   /* Camera */
-   static const Real BEACON_RADIUS               = 0.021f;
-   static const Real CAMERA_ELEVATION            = BODY_ELEVATION+0.1f;
-   static const Real CAMERA_RADIUS               = BEACON_RADIUS;
-   static const Real CAMERA_HEIGHT               = 0.104f;
-
-   /****************************************/
-   /****************************************/
-
    CQTOpenGLOsoyoo::CQTOpenGLOsoyoo() : m_unVertices(40)
    {
       /* Reserve the needed display lists */
-      m_unLists = glGenLists(5);
+      m_unLists = glGenLists(2);
 
       /* Assign indices for better referencing (later) */
       m_unWheelList = m_unLists;
       m_unBodyList = m_unLists + 1;
-      m_unUpperBodyList = m_unLists + 2;
-      m_unColumnList = m_unLists + 3;
-      m_unCameraList                = m_unLists + 4;
 
       /* Create the wheel display list */
       glNewList(m_unWheelList, GL_COMPILE);
@@ -68,21 +36,6 @@ namespace argos
       /* Create the body display list */
       glNewList(m_unBodyList, GL_COMPILE);
       RenderBody();
-      glEndList();
-
-      /* Create the upper body display list */
-      glNewList(m_unUpperBodyList, GL_COMPILE);
-      RenderUpperBody();
-      glEndList();
-
-      /* Create the column display list */
-      glNewList(m_unColumnList, GL_COMPILE);
-      RenderColumn();
-      glEndList();
-
-      /* Create the camera display list */
-      glNewList(m_unCameraList, GL_COMPILE);
-      RenderCamera();
       glEndList();
    }
 
@@ -103,39 +56,18 @@ namespace argos
       glCallList(m_unBodyList);
 
       /* Place the wheels */
-      glPushMatrix();
-      glTranslated(0.0f, HALF_INTERWHEEL_DISTANCE, 0.0f);
-      glCallList(m_unWheelList);
-      glPopMatrix();
-      glPushMatrix();
-      glTranslated(0.0f, -HALF_INTERWHEEL_DISTANCE, 0.0f);
-      glCallList(m_unWheelList);
-      glPopMatrix();
+      /* Left wheel */
+glPushMatrix();
+glTranslated(OSOYOO_WHEEL_OFFSET_X, +OSOYOO_HALF_INTERWHEEL_DISTANCE, 0.0f);
+glCallList(m_unWheelList);
+glPopMatrix();
 
-      glCallList(m_unUpperBodyList);
+/* Right wheel */
+glPushMatrix();
+glTranslated(OSOYOO_WHEEL_OFFSET_X, -OSOYOO_HALF_INTERWHEEL_DISTANCE, 0.0f);
+glCallList(m_unWheelList);
+glPopMatrix();
 
-      /* Columns (3 pillars) */
-      CRadians cStep = CRadians::TWO_PI / OSOYOO_NUM_COLUMNS;
-      Real angleStep = cStep.GetValue();
-
-      Real radius = BODY_RADIUS * 0.9f;            // slightly inside edge
-      CRadians cOffset = CRadians(ARGOS_PI / 3.0); // 60 degrees
-
-      for (UInt32 i = 0; i < OSOYOO_NUM_COLUMNS; ++i)
-      {
-         CRadians cAngle = cOffset + cStep * i;
-         // CRadians cAngle = cStep * i;
-
-         glPushMatrix();
-         glTranslated(radius * Cos(cAngle),
-                      radius * Sin(cAngle),
-                      0.0f);
-         glCallList(m_unColumnList);
-         glPopMatrix();
-      }
-
-      /* Place the camera */
-      glCallList(m_unCameraList);
    }
 
    /* Dark plastic (Lower body) */
@@ -148,29 +80,7 @@ namespace argos
       glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
       glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
    }
-
-   /* Matte black (Upper deck) */
-   void CQTOpenGLOsoyoo::SetDeckMaterial()
-   {
-      const GLfloat ambient_diffuse[] = {0.07f, 0.07f, 0.07f, 1.0f}; // matte black
-      const GLfloat specular[] = {0.02f, 0.02f, 0.02f, 1.0f};
-      const GLfloat shininess[] = {2.0f};
-      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
-   }
-
-   /* Aluminum / metal (Columns) */
-   void CQTOpenGLOsoyoo::SetColumnMaterial()
-   {
-      const GLfloat ambient_diffuse[] = {0.75f, 0.75f, 0.75f, 1.0f}; // light silver
-      const GLfloat specular[] = {0.90f, 0.90f, 0.90f, 1.0f};        // shiny
-      const GLfloat shininess[] = {50.0f};
-      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, ambient_diffuse);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
-   }
-
+   
    /* Rubber (Wheels) */
    void CQTOpenGLOsoyoo::SetWheelMaterial()
    {
@@ -184,9 +94,11 @@ namespace argos
 
    void CQTOpenGLOsoyoo::RenderWheel()
    {
-      /* Right side */
       SetWheelMaterial();
-      CVector2 cVertex(WHEEL_RADIUS, 0.0f);
+      CRadians cAngleStep = CRadians::TWO_PI / m_unVertices;
+
+      /* Right side */
+      CVector2 cVertex(OSOYOO_WHEEL_RADIUS, 0.0f);
       CRadians cAngle(CRadians::TWO_PI / m_unVertices);
       CVector3 cNormal(-1.0f, -1.0f, 0.0f);
       cNormal.Normalize();
@@ -194,13 +106,13 @@ namespace argos
       for (GLuint i = 0; i <= m_unVertices; i++)
       {
          glNormal3d(cNormal.GetX(), cNormal.GetY(), cNormal.GetZ());
-         glVertex3d(cVertex.GetX(), -HALF_WHEEL_WIDTH, WHEEL_RADIUS + cVertex.GetY());
+         glVertex3d(cVertex.GetX(), -OSOYOO_HALF_WHEEL_WIDTH, OSOYOO_WHEEL_RADIUS + cVertex.GetY());
          cVertex.Rotate(cAngle);
          cNormal.RotateY(cAngle);
       }
       glEnd();
       /* Left side */
-      cVertex.Set(WHEEL_RADIUS, 0.0f);
+      cVertex.Set(OSOYOO_WHEEL_RADIUS, 0.0f);
       cNormal.Set(-1.0f, 1.0f, 0.0f);
       cNormal.Normalize();
       cAngle = -cAngle;
@@ -208,159 +120,79 @@ namespace argos
       for (GLuint i = 0; i <= m_unVertices; i++)
       {
          glNormal3d(cNormal.GetX(), cNormal.GetY(), cNormal.GetZ());
-         glVertex3d(cVertex.GetX(), HALF_WHEEL_WIDTH, WHEEL_RADIUS + cVertex.GetY());
+         glVertex3d(cVertex.GetX(), OSOYOO_HALF_WHEEL_WIDTH, OSOYOO_WHEEL_RADIUS + cVertex.GetY());
          cVertex.Rotate(cAngle);
          cNormal.RotateY(cAngle);
       }
       glEnd();
       /* Tire */
       cNormal.Set(1.0f, 0.0f, 0.0f);
-      cVertex.Set(WHEEL_RADIUS, 0.0f);
+      cVertex.Set(OSOYOO_WHEEL_RADIUS, 0.0f);
       cAngle = -cAngle;
       glBegin(GL_QUAD_STRIP);
       for (GLuint i = 0; i <= m_unVertices; i++)
       {
          glNormal3d(cNormal.GetX(), cNormal.GetY(), cNormal.GetZ());
-         glVertex3d(cVertex.GetX(), -HALF_WHEEL_WIDTH, WHEEL_RADIUS + cVertex.GetY());
-         glVertex3d(cVertex.GetX(), HALF_WHEEL_WIDTH, WHEEL_RADIUS + cVertex.GetY());
+         glVertex3d(cVertex.GetX(), -OSOYOO_HALF_WHEEL_WIDTH, OSOYOO_WHEEL_RADIUS + cVertex.GetY());
+         glVertex3d(cVertex.GetX(), OSOYOO_HALF_WHEEL_WIDTH, OSOYOO_WHEEL_RADIUS + cVertex.GetY());
          cVertex.Rotate(cAngle);
          cNormal.RotateY(cAngle);
       }
       glEnd();
    }
 
-   void CQTOpenGLOsoyoo::RenderUpperBody()
-   {
-      SetDeckMaterial();
-      Real z = BODY_ELEVATION + LOWER_BODY_HEIGHT + OSOYOO_COLUMN_HEIGHT;
-
-      CVector2 cVertex(UPPER_BODY_RADIUS, 0.0f);
-      CRadians cAngle(CRadians::TWO_PI / m_unVertices);
-
-      glBegin(GL_POLYGON);
-      glNormal3d(0.0f, 0.0f, 1.0f);
-      for (GLuint i = 0; i <= m_unVertices; i++)
-      {
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), z);
-         cVertex.Rotate(cAngle);
-      }
-      glEnd();
-   }
-
    void CQTOpenGLOsoyoo::RenderBody()
    {
+
       SetBaseMaterial();
-      /* Bottom disk */
-      CVector2 cVertex(BODY_RADIUS, 0.0f);
-      CRadians cAngle(-CRadians::TWO_PI / m_unVertices);
+      const Real z0 = OSOYOO_BASE_ELEVATION;
+   const Real z1 = OSOYOO_BASE_TOP;
 
-      glBegin(GL_POLYGON);
-      glNormal3d(0.0f, 0.0f, -1.0f);
-      for (GLuint i = 0; i <= m_unVertices; i++)
-      {
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), BODY_ELEVATION);
-         cVertex.Rotate(cAngle);
-      }
-      glEnd();
+   glBegin(GL_QUADS);
 
-      /* Side cylinder */
-      cAngle = -cAngle;
-      CVector2 cNormal(1.0f, 0.0f);
-      cVertex.Set(BODY_RADIUS, 0.0f);
+   /* Top */
+   glNormal3d(0, 0, 1);
+   glVertex3d(+OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(+OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(-OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(-OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z1);
 
-      glBegin(GL_QUAD_STRIP);
-      for (GLuint i = 0; i <= m_unVertices; i++)
-      {
-         glNormal3d(cNormal.GetX(), cNormal.GetY(), 0.0f);
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), BODY_ELEVATION + LOWER_BODY_HEIGHT);
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), BODY_ELEVATION);
-         cVertex.Rotate(cAngle);
-         cNormal.Rotate(cAngle);
-      }
-      glEnd();
+   /* Bottom */
+   glNormal3d(0, 0, -1);
+   glVertex3d(+OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(-OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(-OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(+OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z0);
 
-      /* NEW: Top disk */
-      cVertex.Set(BODY_RADIUS, 0.0f);
-      glBegin(GL_POLYGON);
-      glNormal3d(0.0f, 0.0f, 1.0f);
-      for (GLuint i = 0; i <= m_unVertices; i++)
-      {
-         glVertex3d(cVertex.GetX(), cVertex.GetY(),
-                    BODY_ELEVATION + LOWER_BODY_HEIGHT);
-         cVertex.Rotate(cAngle);
-      }
-      glEnd();
-   }
+   /* Front */
+   glNormal3d(1, 0, 0);
+   glVertex3d(+OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(+OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(+OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(+OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z1);
 
-   void CQTOpenGLOsoyoo::RenderColumn()
-   {
-      SetColumnMaterial();
-      Real baseZ = BODY_ELEVATION + LOWER_BODY_HEIGHT;
-      Real topZ = baseZ + OSOYOO_COLUMN_HEIGHT;
+   /* Back */
+   glNormal3d(-1, 0, 0);
+   glVertex3d(-OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(-OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(-OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(-OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z0);
 
-      CVector2 cNormal(1.0f, 0.0f);
-      CVector2 cVertex(OSOYOO_COLUMN_RADIUS, 0.0f);
-      CRadians cAngle(CRadians::TWO_PI / m_unVertices);
+   /* Left */
+   glNormal3d(0, 1, 0);
+   glVertex3d(+OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(+OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(-OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(-OSOYOO_HALF_LENGTH, +OSOYOO_HALF_WIDTH, z0);
 
-      /* Side tube */
-      glBegin(GL_QUAD_STRIP);
-      for (UInt32 i = 0; i <= m_unVertices; ++i)
-      {
-         glNormal3d(cNormal.GetX(), cNormal.GetY(), 0.0f);
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), baseZ);
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), topZ);
-         cVertex.Rotate(cAngle);
-         cNormal.Rotate(cAngle);
-      }
-      glEnd();
-   }
+   /* Right */
+   glNormal3d(0, -1, 0);
+   glVertex3d(+OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(-OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z0);
+   glVertex3d(-OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z1);
+   glVertex3d(+OSOYOO_HALF_LENGTH, -OSOYOO_HALF_WIDTH, z1);
 
-   void CQTOpenGLOsoyoo::SetWhitePlasticMaterial() {
-      const GLfloat pfColor[]     = {   1.0f, 1.0f, 1.0f, 1.0f };
-      const GLfloat pfSpecular[]  = {   0.9f, 0.9f, 0.9f, 1.0f };
-      const GLfloat pfShininess[] = { 100.0f                   };
-      const GLfloat pfEmission[]  = {   0.0f, 0.0f, 0.0f, 1.0f };
-      glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, pfColor);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,            pfSpecular);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS,           pfShininess);
-      glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION,            pfEmission);
-   }
-
-   void CQTOpenGLOsoyoo::RenderCamera() {
-      /* Set material */
-      SetWhitePlasticMaterial();
-      CVector2 cVertex(CAMERA_RADIUS, 0.0f);
-      CRadians cAngle(-CRadians::TWO_PI / m_unVertices);
-      /* Bottom part */
-      glBegin(GL_POLYGON);
-      glNormal3d(0.0f, 0.0f, -1.0f);
-      for(GLuint i = 0; i <= m_unVertices; i++) {
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), CAMERA_ELEVATION);
-         cVertex.Rotate(cAngle);
-      }
-      glEnd();
-      /* Side surface */
-      cAngle = -cAngle;
-      CVector2 cNormal(1.0f, 0.0f);
-      cVertex.Set(CAMERA_RADIUS, 0.0f);
-      glBegin(GL_QUAD_STRIP);
-      for(GLuint i = 0; i <= m_unVertices; i++) {
-         glNormal3d(cNormal.GetX(), cNormal.GetY(), 0.0f);
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), CAMERA_ELEVATION + CAMERA_HEIGHT);
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), CAMERA_ELEVATION);
-         cVertex.Rotate(cAngle);
-         cNormal.Rotate(cAngle);
-      }
-      glEnd();
-      /* Top part */
-      glBegin(GL_POLYGON);
-      glNormal3d(0.0f, 0.0f, 1.0f);
-      cVertex.Set(CAMERA_RADIUS, 0.0f);
-      for(GLuint i = 0; i <= m_unVertices; i++) {
-         glVertex3d(cVertex.GetX(), cVertex.GetY(), CAMERA_ELEVATION + CAMERA_HEIGHT);
-         cVertex.Rotate(cAngle);
-      }
-      glEnd();
+   glEnd();
    }
    
    class CQTOpenGLOperationDrawOsoyooNormal : public CQTOpenGLOperationDrawNormal

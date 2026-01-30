@@ -49,13 +49,13 @@ namespace argos
             //m_pcImuEntity = &(c_entity.GetComponent<COSOYOOIMUEquippedEntity>("osoyoo_imu"));
             // m_pcEmbodiedEntity = &(c_entity.GetComponent<CEmbodiedEntity>("body"));
             m_pcImuEntity =
-   &(c_entity.GetComponent<COSOYOOIMUEquippedEntity>("osoyoo_imu[imu_0]"));
+   &(c_entity.GetComponent<COSOYOOIMUEquippedEntity>("osoyoo_imu[imu]"));
 m_pcImuEntity->Enable();
 
 
         //         m_pcEmbodiedEntity = &(c_entity.GetComponent<CEmbodiedEntity>("body"));
         // //  m_pcControllableEntity = &(c_entity.GetComponent<CControllableEntity>("controller"));
-        //  m_pcImuEntity = &(c_entity.GetComponent<COSOYOOIMUEquippedEntity>("imu_0"));
+        //  m_pcImuEntity = &(c_entity.GetComponent<COSOYOOIMUEquippedEntity>("imu"));
         //  m_pcImuEntity->Enable();
         }
         catch (CARGoSException &ex)

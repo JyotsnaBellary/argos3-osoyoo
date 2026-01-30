@@ -50,14 +50,14 @@
   <!-- * Arena configuration * -->
   <!-- *********************** -->
     
- <arena size="7, 7, 7" center="0,0,0.5">
+ <arena size="5, 5, 5" center="0,0,0.5">
 
     <floor id="floor"
            source="loop_functions"
            pixels_per_meter="50" />
 
-    <!-- <light id="light1"
-           position="0,0,0.5"
+    <light id="light1"
+           position="0,0,0.2"
            orientation="0,0,0"
            color="yellow"
            intensity="3.0"
@@ -68,7 +68,7 @@
            orientation="0,0,0"
            color="red"
            intensity="3.0"
-           medium="leds" /> -->
+           medium="leds" />
     
 <!--     
         You can distribute entities randomly. Here, we distribute
@@ -81,11 +81,10 @@
     -->
     <distribute>
       <position method="uniform" min="-2,-2,0" max="2,2,0" />
-      <orientation method="gaussian" mean="0,180,0" std_dev="120,0,0" />
-      <entity quantity="5" max_trials="100">
-        <osoyoo id="fb">
+      <orientation method="gaussian" mean="0,0,0" std_dev="0,0,0" />
+      <entity quantity="20" max_trials="100">
+        <osoyoo id="osoyoo">
           <controller config="fdc" />
-          
         </osoyoo>
       </entity>
     </distribute>
@@ -94,7 +93,7 @@
         We distribute 5 boxes uniformly in position and rotation around Z.
     -->
     <distribute>
-      <position method="uniform" min="-3,-3,0" max="3,3,0" />
+      <position method="uniform" min="-2.5,-2.5,0" max="2.5,2.5,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
       <entity quantity="5" max_trials="100">
         <box id="b" size="0.3,0.3,0.5" movable="false" />
@@ -107,9 +106,9 @@
         matter)
     -->
     <distribute>
-      <position method="uniform" min="-3,-3,0" max="3,3,0" />
+      <position method="uniform" min="-2,-2,0" max="2,2,0" />
       <orientation method="constant" values="0,0,0" min="0,0,0" max="360,0,0" />
-      <entity quantity="2" max_trials="100">
+      <entity quantity="6" max_trials="100">
         <cylinder id="c" height="0.5" radius="0.15" movable="false" />
       </entity>
     </distribute>
@@ -126,7 +125,7 @@
   <!-- * Media * -->
   <!-- ********* -->
   <media>
-    <!-- <led id="leds" /> -->
+    <led id="leds" />
   </media>
 
   <!-- ****************** -->
@@ -136,7 +135,7 @@
     <qt-opengl>
       <camera>
         <placements>
-          <placement index="0" position="0,0,13" look_at="0,0,0" up="1,0,0" lens_focal_length="65" />
+          <placement index="0" position="0,0,7" look_at="0,0,0" up="1,0,0" lens_focal_length="45" />
         </placements>
       </camera>
     </qt-opengl>

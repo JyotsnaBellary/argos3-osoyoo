@@ -38,26 +38,11 @@ namespace argos {
       /** Renders the body */
       void RenderBody();
 
-      /** Renders the upperbody */
-      void RenderUpperBody();
-
-      /** Renders the columns */
-      void RenderColumn();
-
       /** Set Base Material */ 
       void SetBaseMaterial();
 
-      /** Set deck Material */ 
-      void SetDeckMaterial();
-
-      /** Set Column Material */ 
-      void SetColumnMaterial();
-
       /** Set Wheel Material */
       void SetWheelMaterial(); 
-
-      /** Renders the camera */
-      void RenderCamera();
 
       void SetWhitePlasticMaterial();
    private:

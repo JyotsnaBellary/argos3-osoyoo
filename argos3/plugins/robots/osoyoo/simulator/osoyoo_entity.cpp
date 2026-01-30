@@ -62,17 +62,17 @@ namespace argos {
           * Create and init components
           */
          /* Embodied entity */
-         m_pcEmbodiedEntity = new CEmbodiedEntity(this, "body_0", c_position, c_orientation);
+         m_pcEmbodiedEntity = new CEmbodiedEntity(this, "body", c_position, c_orientation);
          AddComponent(*m_pcEmbodiedEntity);
          /* Wheeled entity and wheel positions (left, right) */
-         m_pcWheeledEntity = new CWheeledEntity(this, "wheels_0", 2);
+         m_pcWheeledEntity = new CWheeledEntity(this, "wheels", 2);
          AddComponent(*m_pcWheeledEntity);
-         m_pcWheeledEntity->SetWheel(0, CVector3(0.0f,  OSOYOO_HALF_WHEEL_DISTANCE, 0.0f), OSOYOO_WHEEL_RADIUS);
-         m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -OSOYOO_HALF_WHEEL_DISTANCE, 0.0f), OSOYOO_WHEEL_RADIUS);
+         m_pcWheeledEntity->SetWheel(0, CVector3(OSOYOO_WHEEL_OFFSET_X,  OSOYOO_HALF_INTERWHEEL_DISTANCE, 0.0f), OSOYOO_WHEEL_RADIUS);
+         m_pcWheeledEntity->SetWheel(1, CVector3(OSOYOO_WHEEL_OFFSET_X, -OSOYOO_HALF_INTERWHEEL_DISTANCE, 0.0f), OSOYOO_WHEEL_RADIUS);
 
          /* IMU equipped entity */
          m_pcIMUEquippedEntity =
-            new COSOYOOIMUEquippedEntity(this, "imu_0");
+            new COSOYOOIMUEquippedEntity(this, "imu");
          AddComponent(*m_pcIMUEquippedEntity);
 
    /* Proximity sensor equipped entity */
@@ -96,7 +96,7 @@ CRadians sensor_angle[7] = {
          {
             cAngle = sensor_angle[i];
             cAngle.SignedNormalize();
-            cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+            cOff.Set(OSOYOO_FOOTPRINT_RADIUS, 0.0f, 0.0f);
             cOff.RotateZ(cAngle);
             cOff += c_center;
             cDir.Set(OSOYOO_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
@@ -115,7 +115,7 @@ cUltraAngle.SignedNormalize();
 CVector3 cUltraCenter(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
 
 /* Sensor offset */
-CVector3 cUltraOff(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+CVector3 cUltraOff(OSOYOO_FOOTPRINT_RADIUS, 0.0f, 0.0f);
 cUltraOff.RotateZ(cUltraAngle);
 cUltraOff += cUltraCenter;
 
@@ -163,14 +163,14 @@ m_pcUltrasonicSensorEquippedEntity->AddSensor(
          m_pcEmbodiedEntity->Init(GetNode(t_tree, "body"));
          
          /* Wheeled entity and wheel positions (left, right) */
-         m_pcWheeledEntity = new CWheeledEntity(this, "wheels_0", 2);
+         m_pcWheeledEntity = new CWheeledEntity(this, "wheels", 2);
          AddComponent(*m_pcWheeledEntity);
-         m_pcWheeledEntity->SetWheel(0, CVector3(0.0f,  OSOYOO_HALF_WHEEL_DISTANCE, 0.0f), OSOYOO_WHEEL_RADIUS);
-         m_pcWheeledEntity->SetWheel(1, CVector3(0.0f, -OSOYOO_HALF_WHEEL_DISTANCE, 0.0f), OSOYOO_WHEEL_RADIUS);
+         m_pcWheeledEntity->SetWheel(0, CVector3(OSOYOO_WHEEL_OFFSET_X,  OSOYOO_HALF_INTERWHEEL_DISTANCE, 0.0f), OSOYOO_WHEEL_RADIUS);
+         m_pcWheeledEntity->SetWheel(1, CVector3(OSOYOO_WHEEL_OFFSET_X, -OSOYOO_HALF_INTERWHEEL_DISTANCE, 0.0f), OSOYOO_WHEEL_RADIUS);
 
          /* IMU equipped entity */
          m_pcIMUEquippedEntity =
-            new COSOYOOIMUEquippedEntity(this, "imu_0");
+            new COSOYOOIMUEquippedEntity(this, "imu");
          AddComponent(*m_pcIMUEquippedEntity);
 
          /* Proximity sensor equipped entity */
@@ -194,7 +194,7 @@ CRadians sensor_angle[7] = {
          {
             cAngle = sensor_angle[i];
             cAngle.SignedNormalize();
-            cOff.Set(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+            cOff.Set(OSOYOO_FOOTPRINT_RADIUS, 0.0f, 0.0f);
             cOff.RotateZ(cAngle);
             cOff += c_center;
             cDir.Set(OSOYOO_IR_SENSOR_RING_RANGE, 0.0f, 0.0f);
@@ -214,7 +214,7 @@ cUltraAngle.SignedNormalize();
 CVector3 cUltraCenter(0.0f, 0.0f, OSOYOO_IR_SENSOR_RING_ELEVATION);
 
 /* Sensor offset */
-CVector3 cUltraOff(OSOYOO_IR_SENSOR_RING_RADIUS, 0.0f, 0.0f);
+CVector3 cUltraOff(OSOYOO_FOOTPRINT_RADIUS, 0.0f, 0.0f);
 cUltraOff.RotateZ(cUltraAngle);
 cUltraOff += cUltraCenter;
 
