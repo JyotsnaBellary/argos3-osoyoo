@@ -10,8 +10,8 @@ Clone this repository and navigate to the root directory:
 
 ### Clone the repository
 ```bash
-git clone https://github.com/CPS-Konstanz/argos3-turtlebot4.git
-cd ~/argos3-turtlebot4
+git clone https://github.com/CPS-Konstanz/argos3-osoyoo.git
+cd ~/argos3-osoyoo
 ```
 
 ### Install the plugin
