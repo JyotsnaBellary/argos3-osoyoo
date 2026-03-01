@@ -57,14 +57,14 @@
            pixels_per_meter="50" />
 
     <light id="light_1"
-      position="-2,1.5,1.5"
+      position="-0.2,0.0, 0.12"
       orientation="0,0,0"
-      color="yellow"
+      color="red"
       intensity="3.0"
       medium="leds" />
 
     <light id="light_2"
-      position="-2,-1.5,1.5"
+      position="0.2,0.0, 0.12"
       orientation="0,0,0"
       color="yellow"
       intensity="3.0"
