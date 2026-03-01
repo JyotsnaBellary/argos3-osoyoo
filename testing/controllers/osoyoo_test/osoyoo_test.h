@@ -29,7 +29,7 @@
 #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_ultrasonic_sensor.h>
 // #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_base_ground_sensor.h>
 // #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_lidar_sensor.h>
-// #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_colored_blob_omnidirectional_camera_sensor.h>
+#include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_colored_blob_omnidirectional_camera_sensor.h>
 // #include <argos3/plugins/robots/osoyoo/simulator/osoyoo_colored_blob_perspective_camera_default_sensor.h>
 #include <argos3/plugins/robots/osoyoo/control_interface/ci_osoyoo_imu_sensor.h>
 #include <argos3/plugins/robots/generic/control_interface/ci_leds_actuator.h>
@@ -170,7 +170,7 @@ private:
    /* Pointer to the new osoyoo encoder sensor */
    CCI_OsoyooEncoderSensor* m_pcEncoder;
 
-   // CCI_ColoredBlobPerspectiveCameraSensor* m_pcCamera;
+   CCI_OsoyooColoredBlobOmnidirectionalCameraSensor *m_pcCamera;
    // CCI_LEDsActuator* m_pcLedAct;
 
 

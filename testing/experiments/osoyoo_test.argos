@@ -18,7 +18,7 @@
   <controllers>
 
     <osoyoo_test_controller id="fdc"
-                                        library="build/argos3/testing/controllers/osoyoo_test/libosoyoo_test.so">
+                                        library="build/testing/controllers/osoyoo_test/libosoyoo_test.so">
       <actuators>
         <differential_steering implementation="default" />
         <!-- <leds implementation="default" medium="leds" /> -->
@@ -30,7 +30,7 @@
         <osoyoo_encoder implementation="default"/>
         <!-- <osoyoo_lidar implementation="default" num_readings="360" show_rays="false" /> -->
         <!-- <osoyoo_colored_blob_perspective_camera implementation="default" medium="leds" show_rays="true" /> -->
-        <!-- <osoyoo_colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" /> -->
+        <osoyoo_colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
         <osoyoo_imu implementation="default" />
       </sensors>
       <params velocity="6.0" />
@@ -41,7 +41,7 @@
 <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="build/argos3/testing/loop_functions/test_loop_functions/libtest_loop_functions"
+  <loop_functions library="build/testing/loop_functions/test_loop_functions/libtest_loop_functions"
                   label="test_loop_functions">
     <testing />
   </loop_functions>
@@ -56,19 +56,19 @@
            source="loop_functions"
            pixels_per_meter="50" />
 
-    <light id="light1"
-           position="0,0,0.2"
-           orientation="0,0,0"
-           color="yellow"
-           intensity="3.0"
-           medium="leds" />
+    <light id="light_1"
+      position="-2,1.5,1.5"
+      orientation="0,0,0"
+      color="yellow"
+      intensity="3.0"
+      medium="leds" />
 
-    <light id="light2"
-           position="0,2,0.5"
-           orientation="0,0,0"
-           color="red"
-           intensity="3.0"
-           medium="leds" />
+    <light id="light_2"
+      position="-2,-1.5,1.5"
+      orientation="0,0,0"
+      color="yellow"
+      intensity="3.0"
+      medium="leds" />
     
 <!--     
         You can distribute entities randomly. Here, we distribute

@@ -50,11 +50,11 @@ void COsoyooTest::Init(TConfigurationNode& t_node) {
    m_pcProximity = GetSensor  <CCI_OsoyooProximitySensor             >("osoyoo_proximity"    );
    m_pcUltrasonic = GetSensor  <CCI_OsoyooUltrasonicSensor           >("osoyoo_ultrasonic"  );
    // m_pcLight = GetSensor  <CCI_OsoyooLightSensor>("osoyoo_light");
-   // m_pcCamera = GetSensor  <CCI_OsoyooColoredBlobOmnidirectionalCameraSensor>("osoyoo_colored_blob_omnidirectional_camera");
+   m_pcCamera = GetSensor  <CCI_OsoyooColoredBlobOmnidirectionalCameraSensor>("osoyoo_colored_blob_omnidirectional_camera");
    // m_pcGround = GetSensor  <CCI_OsoyooBaseGroundSensor>("osoyoo_ground");
    // m_pcLEDs   = GetActuator<CCI_LEDsActuator                          >("leds");
    // m_pcLidar = GetSensor  <CCI_OsoyooLIDARSensor    >("osoyoo_lidar"  );
-   // m_pcCamera->Enable();
+   m_pcCamera->Enable();
 m_pcIMU = GetSensor<CCI_OSOYOOIMUSensor>("osoyoo_imu");
    m_pcIMU->Enable();
    if(!m_pcIMU) {
@@ -138,17 +138,15 @@ if(!m_pcEncoder) {
 // /****************************************/
 // /****************************************/
 
-// void COsoyooTest::LogLightUsingCameraSensorReadings() const {
-//     /* Perspective Camera */
-//    const CCI_OsoyooColoredBlobOmnidirectionalCameraSensor::SReadings& sReadings = m_pcCamera->GetReadings();
-//    LOG << CCI_Controller::GetId() << "> Camera: " << std::endl;
-//    LOG << "Number of blobs detected: " << sReadings.BlobList.size() << std::endl;
-//    LOG << "Counter: " << sReadings.Counter << std::endl;
-//    for (size_t i = 0; i < sReadings.BlobList.size(); i++) {
-//          CCI_OsoyooColoredBlobOmnidirectionalCameraSensor::SBlob* sBlob = sReadings.BlobList[i];
-//       LOG << "Color = " << sBlob->Color << std::endl;
-//    }
-// }
+void COsoyooTest::LogLightUsingCameraSensorReadings() const {
+    /* Perspective Camera */
+   const auto &tReadings = m_pcCamera->GetReadings();
+   LOG << "Camera: " << tReadings.BlobList.size() << " blobs detected" << std::endl;
+   for(size_t i = 0; i < tReadings.BlobList.size(); ++i) {
+      const auto* blob = tReadings.BlobList[i];
+      LOG << "  blob[" << i << "]: color=" << blob->Color << "  angle=" << ToDegrees(blob->Angle).GetValue() << ",  dist=" << blob->Distance  << std::endl;
+   }
+}
 
 // /****************************************/
 // /****************************************/
