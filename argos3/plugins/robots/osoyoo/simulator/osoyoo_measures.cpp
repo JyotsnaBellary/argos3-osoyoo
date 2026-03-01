@@ -13,14 +13,14 @@
 
 UInt8 OSOYOO_POWERON_LASERON   = 3;
 const Real OSOYOO_MASS = 0.08f;
-const Real OSOYOO_LENGTH = 0.19f;//Yet to confirm
-const Real OSOYOO_WIDTH = 0.145; // // yet to confirm
+const Real OSOYOO_LENGTH = 0.19f; //Yet to confirm
+const Real OSOYOO_WIDTH = 0.145; // yet to confirm
 const Real OSOYOO_BASE_ELEVATION = 0.02f;
 const Real OSOYOO_HEIGHT    = 0.05;
 const Real OSOYOO_BASE_TOP = OSOYOO_BASE_ELEVATION + OSOYOO_HEIGHT;
 
 
-const Real OSOYOO_WHEEL_RADIUS        = 0.0325; //important
+const Real OSOYOO_WHEEL_RADIUS        = 0.0325; //
 const Real OSOYOO_INTERWHEEL_DISTANCE      = 0.12;
 const Real OSOYOO_HALF_INTERWHEEL_DISTANCE = OSOYOO_INTERWHEEL_DISTANCE * 0.5;
 

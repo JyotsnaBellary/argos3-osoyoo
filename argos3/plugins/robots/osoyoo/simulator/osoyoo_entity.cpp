@@ -1,8 +1,4 @@
-/**
- * @file <osoyoo/simulator/osoyoo_entity.cpp>
- *
- * @author Carlo Pinciroli - <ilpincy@gmail.com>
- */
+
 
 #include "osoyoo_entity.h"
 #include "osoyoo_measures.h"
@@ -29,6 +25,7 @@ namespace argos {
       m_pcProximitySensorEquippedEntity(nullptr),
       m_pcUltrasonicSensorEquippedEntity(nullptr),
       m_pcWheeledEntity(nullptr),
+      m_pcOmnidirectionalCameraEquippedEntity(nullptr),
       m_pcIMUEquippedEntity(nullptr)
       {
    }
@@ -55,6 +52,7 @@ namespace argos {
       m_pcProximitySensorEquippedEntity(nullptr),
       m_pcUltrasonicSensorEquippedEntity(nullptr),
       m_pcWheeledEntity(nullptr),
+      m_pcOmnidirectionalCameraEquippedEntity(nullptr),
       m_pcIMUEquippedEntity(nullptr)
        {
       try {
@@ -75,6 +73,16 @@ namespace argos {
             new COSOYOOIMUEquippedEntity(this, "imu");
          AddComponent(*m_pcIMUEquippedEntity);
 
+   /* Omnidirectional camera equipped entity */
+         m_pcOmnidirectionalCameraEquippedEntity =
+             new COmnidirectionalCameraEquippedEntity(this,
+                                                      "omnidirectional_camera_0",
+                                                      c_omnicam_aperture,
+                                                      CVector3(0.0f,
+                                                               0.0f,
+                                                               OMNIDIRECTIONAL_CAMERA_ELEVATION));
+         AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
+      
    /* Proximity sensor equipped entity */
     m_pcProximitySensorEquippedEntity =
             new CProximitySensorEquippedEntity(this,
@@ -172,6 +180,18 @@ m_pcUltrasonicSensorEquippedEntity->AddSensor(
          m_pcIMUEquippedEntity =
             new COSOYOOIMUEquippedEntity(this, "imu");
          AddComponent(*m_pcIMUEquippedEntity);
+
+          /* Omnidirectional camera equipped entity */
+         CDegrees cAperture(70.0f);
+         GetNodeAttributeOrDefault(t_tree, "omnidirectional_camera_aperture", cAperture, cAperture);
+         m_pcOmnidirectionalCameraEquippedEntity =
+             new COmnidirectionalCameraEquippedEntity(this,
+                                                      "omnidirectional_camera_0",
+                                                      ToRadians(cAperture),
+                                                      CVector3(0.0f,
+                                                               0.0f,
+                                                               OMNIDIRECTIONAL_CAMERA_ELEVATION));
+         AddComponent(*m_pcOmnidirectionalCameraEquippedEntity);
 
          /* Proximity sensor equipped entity */
          m_pcProximitySensorEquippedEntity =
@@ -287,7 +307,7 @@ m_pcUltrasonicSensorEquippedEntity->AddSensor(
    
    REGISTER_ENTITY(COsoyooEntity,
                    "osoyoo",
-                   "Jyotsna Bellary [jyotsnabellary@gmail.com]",
+                   "Jyotsna Bellary",
                    "1.0",
                    "The osoyoo robot.",
                    "The osoyoo is a open-hardware, extensible robot intended for education. In its\n"

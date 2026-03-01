@@ -13,13 +13,13 @@ namespace argos {
    class COsoyooEntity;
    class COSOYOOIMUEquippedEntity;
    class CProximitySensorEquippedEntity; 
+   class COmnidirectionalCameraEquippedEntity;
 }
 
 #include <argos3/core/simulator/entity/composable_entity.h>
 #include <argos3/plugins/simulator/entities/wheeled_entity.h>
 #include <argos3/plugins/simulator/entities/perspective_camera_equipped_entity.h>
 #include <argos3/plugins/robots/osoyoo/simulator/osoyoo_imu_equipped_entity.h>
-
 namespace argos {
 
    class COsoyooEntity : public CComposableEntity {
@@ -68,6 +68,10 @@ namespace argos {
          return *m_pcProximitySensorEquippedEntity;
       }
 
+      inline COmnidirectionalCameraEquippedEntity& GetOmnidirectionalCameraEquippedEntity() {
+         return *m_pcOmnidirectionalCameraEquippedEntity;
+      }
+
       inline COSOYOOIMUEquippedEntity& GetIMUEquippedEntity() {
          return *m_pcIMUEquippedEntity;
       }
@@ -92,6 +96,7 @@ namespace argos {
       CProximitySensorEquippedEntity*        m_pcUltrasonicSensorEquippedEntity;
       CWheeledEntity*                        m_pcWheeledEntity;
       COSOYOOIMUEquippedEntity*              m_pcIMUEquippedEntity;
+      COmnidirectionalCameraEquippedEntity*  m_pcOmnidirectionalCameraEquippedEntity;
    };
 
 }

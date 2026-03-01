@@ -93,7 +93,6 @@ namespace argos
 
    const CCI_OsoyooColoredBlobOmnidirectionalCameraSensor::SReadings &CCI_OsoyooColoredBlobOmnidirectionalCameraSensor::GetReadings() const
    {
-      std::cout << "Get Readingss";
       return m_sReadings;
    }
 

@@ -8,6 +8,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_OSOYOO_CONTROLINTERFACE
   control_interface/ci_osoyoo_ultrasonic_sensor.h
   control_interface/ci_osoyoo_encoder_sensor.h
   control_interface/ci_osoyoo_imu_sensor.h
+  control_interface/ci_osoyoo_colored_blob_omnidirectional_camera_sensor.h
 )
 set(ARGOS3_HEADERS_PLUGINS_ROBOTS_OSOYOO_SIMULATOR
     simulator/dynamics2d_osoyoo_model.h
@@ -16,6 +17,7 @@ set(ARGOS3_HEADERS_PLUGINS_ROBOTS_OSOYOO_SIMULATOR
     simulator/osoyoo_proximity_default_sensor.h
     simulator/osoyoo_ultrasonic_default_sensor.h
     simulator/osoyoo_imu_equipped_entity.h
+    simulator/osoyoo_colored_blob_omnidirectional_camera_rotzonly_sensor.h
     simulator/osoyoo_imu_sensor.h
     simulator/osoyoo_entity.h
     simulator/osoyoo_measures.h
@@ -31,6 +33,7 @@ set(ARGOS3_SOURCES_PLUGINS_ROBOTS_OSOYOO
   control_interface/ci_osoyoo_ultrasonic_sensor.cpp
   control_interface/ci_osoyoo_encoder_sensor.cpp
   control_interface/ci_osoyoo_imu_sensor.cpp
+  control_interface/ci_osoyoo_colored_blob_omnidirectional_camera_sensor.cpp
 )
 
 set(ARGOS3_SOURCES_PLUGINS_ROBOTS_OSOYOO
@@ -43,6 +46,7 @@ set(ARGOS3_SOURCES_PLUGINS_ROBOTS_OSOYOO
   simulator/osoyoo_encoder_sensor.cpp
   simulator/osoyoo_imu_equipped_entity.cpp
   simulator/osoyoo_imu_sensor.cpp
+  simulator/osoyoo_colored_blob_omnidirectional_camera_rotzonly_sensor.cpp
   simulator/osoyoo_entity.cpp
   simulator/osoyoo_measures.cpp
 )
